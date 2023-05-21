@@ -139,7 +139,12 @@ void putBackSpace(){
 
 
 void putNewLine(){
-
+	tp.x=0;
+    if (tp.y + CHAR_HEIGHT > VBE_mode_info->height){
+        scrollUpwards();
+        return;
+    }
+    tp.y += CHAR_HEIGHT;
 }
 
 static void copyPixel(uint32_t srcX,uint32_t srcY,uint32_t dstX,uint32_t dstY){
