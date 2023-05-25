@@ -4,6 +4,8 @@
 #include <moduleLoader.h>
 
 #include <videoDriver.h>
+#include <idtLoader.h>
+#include <keyboardDriver.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -47,5 +49,6 @@ void * initializeKernelBinary()
 
 int main(){
     //((EntryPoint)sampleCodeModuleAddress)() //TODO: acceso a userspace (?)
-	return 0;
+	load_idt();
+	while(1);
 }
