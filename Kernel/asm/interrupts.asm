@@ -3,7 +3,10 @@ global _cli
 global _sti
 global picMasterMask
 global picSlaveMask
+global _syscallHandler
 extern irqDispatcher
+extern read
+extern write
 
 section .text
 
@@ -22,6 +25,19 @@ section .text
 
 _irq01Handler:
     irqHandlerMaster 1
+
+_syscallHandler:
+    cmp rax, 0
+    je readHandler
+    cmp rax, 1
+    je writeHandler
+    ret
+
+readHandler:
+    call read
+
+writeHandler:
+    call write
 
 _cli:
     cli 

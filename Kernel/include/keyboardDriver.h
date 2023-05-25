@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+extern char realKey;
+
+extern int keyPressed;
+
 void keyboard_handler();
 
 #endif

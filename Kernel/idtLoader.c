@@ -8,6 +8,7 @@ extern void _cli();
 extern void _sti();
 extern void picMasterMask(uint8_t mask);
 extern void picSlaveMask(uint8_t mask);
+extern void _syscallHandler();
 
 #pragma pack(push)
 #pragma pack (1)
@@ -39,6 +40,7 @@ void setup_IDT_entry (int index, uint64_t offset) {
 void load_idt() {
     _cli();
     setup_IDT_entry (0x21, (uint64_t) &_irq01Handler);
+    setup_IDT_entry (0x80, (uint64_t) &_syscallHandler);
     picMasterMask(0xFD);
     picSlaveMask(0xFF);
     _sti();

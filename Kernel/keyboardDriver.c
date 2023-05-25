@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <videoDriver.h>
+#include <keyboardDriver.h>
 
 extern char readKey();
 
@@ -10,11 +11,16 @@ char keyboard_map[128] = {
     'n', 'm', ',', '.', '/', '\0', '*', '\0', ' ', '\0'
 };
 
+char realKey;
+
+int keyPressed = 0;
 
 
 void keyboard_handler(){
     char key = readKey();
     if(key >= 0 && key < 128){
-        putChar(0xFFFFFF, 0, keyboard_map[key]);
+        realKey = keyboard_map[key];
+        keyPressed = 1;
+        putChar(0xFFFFFF, 0, realKey);
     }
 }
