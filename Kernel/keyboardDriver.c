@@ -20,7 +20,7 @@ void keyboard_handler(){
     char key = readKey();
     if(key >= 0 && key < 128){
         realKey = keyboard_map[key];
-        keyPressed = 1;
         putChar(0xFFFFFF, 0, realKey);
+        keyPressed = 1;
     }
 }

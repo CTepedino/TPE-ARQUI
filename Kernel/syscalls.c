@@ -5,7 +5,6 @@
 void read(uint64_t fd, char *buf, uint64_t count){
     if (fd == 0) {
         for (int i = 0; i < count && realKey != '\n'; i++){
-            keyPressed = 0;
             while (!keyPressed);
             if (realKey != '\n') {
                 buf[i] = realKey;

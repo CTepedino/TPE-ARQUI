@@ -48,7 +48,6 @@ void * initializeKernelBinary()
 }
 
 int main(){
-    //((EntryPoint)sampleCodeModuleAddress)() //TODO: acceso a userspace (?)
 	load_idt();
-	while(1);
+	((EntryPoint)sampleCodeModuleAddress)(); //TODO: acceso a userspace (?)
 }
