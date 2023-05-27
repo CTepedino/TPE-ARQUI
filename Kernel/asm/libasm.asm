@@ -1,8 +1,5 @@
 GLOBAL cpuVendor
-
-GLOBAL getHour
-GLOBAL getMin
-GLOBAL getSec
+GLOBAL getTime
 
 section .text
 	
@@ -30,25 +27,16 @@ cpuVendor:
 	pop rbp
 	ret
 
-%macro getTime 1
-	push rbp
-        mov rbp, rsp
 
-        mov al, %1
-        out 70h, al
-        in al, 71h
+getTime:
+    push rbp
+    mov rbp, rsp
 
-        mov rsp, rbp
-        pop rbp
-        ret
-%endmacro
+    mov rax, rdi
+    out 70h, al
+    in al, 71h
 
+    mov rsp, rbp
+    pop rbp
+    ret
 
-getHour:
-    getTime 4
-
-getMin:
-    getTime 2
-
-getSec:
-    getTime 0

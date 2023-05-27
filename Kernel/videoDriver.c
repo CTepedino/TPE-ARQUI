@@ -139,7 +139,7 @@ void putBackSpace(){
 
 
 void putNewLine(){
-	tp.x=0;
+    tp.x=0;
     if (tp.y + CHAR_HEIGHT > VBE_mode_info->height){
         scrollUpwards();
         return;
@@ -178,6 +178,22 @@ void putString(uint32_t hexColorChar, uint32_t hexColorBG,const char * string){
     }
 }
 
+void putNumberBaseN(uint32_t hexColorChar, uint32_t hexColorBG,unsigned int number,char N){
+    if (number>=N) {
+        putNumberBaseN(hexColorChar, hexColorBG, number / N, N);
+    }
+    char c = number%N;
+    putChar(hexColorChar,hexColorBG, c>=10? c%10+'A': c+'0');
+}
+
+void putDec(uint32_t hexColorChar, uint32_t hexColorBG,unsigned int dec){
+    putNumberBaseN(hexColorChar, hexColorBG, dec, 10);
+}
+
+void putHex(uint32_t hexColorChar, uint32_t hexColorBG,unsigned int hex){
+    putNumberBaseN(hexColorChar,hexColorBG ,hex, 16);
+}
+
 int getWidth(){
     return VBE_mode_info->width;
 }
@@ -185,3 +201,5 @@ int getWidth(){
 int getHeight(){
     return VBE_mode_info->height;
 }
+
+//TODO: Despues tengo que sacar varias funciones de aca, solo deberia ser lo minimo necesario para imprimir (creo que solo pixel y char, todo lo demas con syscalls o en userland)

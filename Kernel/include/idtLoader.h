@@ -1,9 +1,10 @@
-#ifndef IDTLOADER_H
-#define IDTLOADER_H
+#ifndef _IDTLOADER_H
+#define _IDTLOADER_H
 
 #include <stdint.h>
+#include <defs.h>
+#include <interrupts.h>
 
-void setup_IDT_entry (int index, uint64_t offset);
 void load_idt();
 
 #endif

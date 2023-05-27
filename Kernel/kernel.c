@@ -7,6 +7,7 @@
 #include <idtLoader.h>
 #include <keyboardDriver.h>
 
+
 extern uint8_t text;
 extern uint8_t rodata;
 extern uint8_t data;
@@ -44,10 +45,19 @@ void * initializeKernelBinary()
 	};
 	loadModules(&endOfKernelBinary, moduleAddresses);
 	clearBSS(&bss, &endOfKernel - &bss);
+    load_idt();
 	return getStackBase();
 }
 
+//extern scRead(uint64_t fd, char *buffer, uint64_t length);
+//extern scWrite(uint64_t fd, char * string, uint64_t count);
 int main(){
-	load_idt();
-	((EntryPoint)sampleCodeModuleAddress)(); //TODO: acceso a userspace (?)
+
+    ((EntryPoint) sampleCodeModuleAddress)();
+   /* char string[60];
+    char * buffer = &string[0];
+    scRead(0, buffer, 10);
+    putString(0xFFFFFF, 0, string);*/ //TODO: esto esta para probar el read, creo que convendria implementar alguna version simplificada del malloc para simplificar las llamadas
+
+	return 0;
 }

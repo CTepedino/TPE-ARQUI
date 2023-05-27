@@ -13,5 +13,8 @@ void scrollUpwards();
 void putString(uint32_t hexColorChar, uint32_t hexColorBG,const char * string);
 int getWidth();
 int getHeight();
+void putNumberBaseN(uint32_t hexColorChar, uint32_t hexColorBG,unsigned int number,char N);
+void putDec(uint32_t hexColorChar, uint32_t hexColorBG,unsigned int dec);
+void putHex(uint32_t hexColorChar, uint32_t hexColorBG,unsigned int hex);
 
 #endif

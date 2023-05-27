@@ -3,10 +3,9 @@
 
 #include <stdint.h>
 
-extern char realKey;
-
-extern int keyPressed;
 
 void keyboard_handler();
+char getKey();
 
+char readKey();
 #endif

@@ -48,3 +48,22 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 
 	return destination;
 }
+
+char getMonth(){
+    return getTime(8);
+}
+char getDay(){
+    return getTime(7);
+}
+char getHour(){
+    char h = getTime(4);
+    if (h<3){
+        h+=24;
+    }
+    return h-3;
+}
+char getMin(){
+    return getTime(2);
+}
+
+
