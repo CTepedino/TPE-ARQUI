@@ -1,9 +1,5 @@
 #include <idtLoader.h>
 
-extern void _irq01Handler();
-extern void _syscallHandler();
-extern void _exception0Handler();
-
 #pragma pack(push)		/* Push de la alineación actual */
 #pragma pack (1) 		/* Alinear las siguiente estructuras a 1 byte */
 
