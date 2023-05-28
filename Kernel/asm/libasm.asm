@@ -1,5 +1,6 @@
 GLOBAL cpuVendor
 GLOBAL getTime
+GLOBAL readKey
 
 section .text
 	
@@ -40,3 +41,6 @@ getTime:
     pop rbp
     ret
 
+readKey:
+	in al, 0x60
+    ret
