@@ -147,11 +147,16 @@ _exception0Handler:
 
 ;System Calls
 _syscallHandler:
+    mov rcx, r10
     push rax
     call syscallDispatcher
+    pop rax
     iretq
-
-
+; syscalls params:	RDI	RSI	RDX	R10	R8	R9 RAX
+; syscallHandler:	RDI RSI RDX R10 R8  R9 RAX (RAX por stack)
+; params in C are:	RDI RSI RDX RCX R8  R9
+;Le robe esto a apuntes Marengo xd. syscalls params es como hay que mandarlo por asm.
+;TODO: borrar este comentario
 
 haltcpu:
 	cli
