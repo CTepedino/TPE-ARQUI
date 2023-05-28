@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 
-
 void keyboard_handler();
 char getKey();
 
