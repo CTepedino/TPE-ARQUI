@@ -1,15 +1,14 @@
-global putCharHandler
-global getCharHandler
+global sys_write
+global sys_read
 
 section .text
 
-putCharHandler:
-    mov rax, 1
-    int 0x80
-    ret
-
-getCharHandler:
+sys_read:
     mov rax, 0
     int 0x80
     ret
 
+sys_write:
+    mov rax, 1
+    int 0x80
+    ret
