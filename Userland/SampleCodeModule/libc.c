@@ -38,3 +38,32 @@ void scan(char * buf, uint64_t length){
         }
     }
 }
+
+void intToString(uint64_t num, char * str) {
+    int i = 0;
+    while (num > 0){
+        str[i++] = num % 10 + '0';
+        num /= 10;
+    }
+
+    str[i] = 0;
+    
+    int length = i;
+    for (int j = 0; j < length / 2; j++) {
+        char temp = str[j];
+        str[j] = str[length - j - 1];
+        str[length - j - 1] = temp;
+    }
+}
+
+void getTime(char * buf){
+    char * p = buf;
+    uint64_t time = sys_time();
+
+    intToString((time & 0xFF), p);
+    p[2] = ':';
+    intToString((time >> 8) & 0xFF, p);
+    p[5] = ':';
+    intToString((time >> 16) & 0xFF, p);
+    p[8] = 0;
+}

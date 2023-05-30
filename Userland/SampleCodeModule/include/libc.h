@@ -15,4 +15,8 @@ char getChar();
 
 void scan(char * buf, uint64_t length);
 
+void intToString(uint64_t num, char * string);
+
+void getTime(char * buf);
+
 #endif
