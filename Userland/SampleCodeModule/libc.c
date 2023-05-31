@@ -37,8 +37,10 @@ void scan(char * buf, uint64_t length){
             return;
         }
         if (c == '\b'){
-            count--;
-            putChar(c);
+            if (count > 0){
+                count--;
+                putChar(c);
+            }
         }
         else{
             putChar(c);
@@ -67,15 +69,22 @@ void intToString(uint64_t num, char * str) {
 }
 
 void getTime(char * buf){
-    /*char * p = buf;
-    uint64_t time = sys_getRTC(id);
+    char * p = buf;
 
-    intToString((time & 0xFF), p);
+    uint32_t * hours;
+    uint32_t * minutes;
+    uint32_t * seconds;
+
+    sys_getRTC(4, hours);
+    sys_getRTC(2, minutes);
+    sys_getRTC(0, seconds);
+
+    intToString(*hours, p);
     p[2] = ':';
-    intToString((time >> 8) & 0xFF, p);
+    intToString(*minutes, p);
     p[5] = ':';
-    intToString((time >> 16) & 0xFF, p);
-    p[8] = '\n';*/
+    intToString(*seconds, p);
+    p[8] = '\n';
 }
 
 void fillRegData(uint64_t regData[17]){
