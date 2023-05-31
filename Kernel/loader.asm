@@ -1,6 +1,10 @@
 global loader
+global reboot
 extern main
 extern initializeKernelBinary
+extern getStackBase
+
+section .text
 
 loader:
 	call initializeKernelBinary	; Set up the kernel binary, and get the stack address
@@ -10,3 +14,8 @@ hang:
 	cli
 	hlt	; halt machine should kernel return
 	jmp hang
+
+reboot:
+    call getStackBase
+    mov rsp, rax
+    call main

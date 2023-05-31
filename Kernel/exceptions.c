@@ -3,6 +3,8 @@
 #define ZERO_EXCEPTION_ID 0x0
 #define INVALID_OP_ID 6
 
+extern void reboot();
+
 static char * regs[] = {"RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "R8 ", "R9 ", "R10",
                         "R11", "R12", "R13", "R14", "R15", "RBP", "RSP", "RIP"};
 
@@ -26,9 +28,11 @@ void exceptionDispatcher(int exception, uint64_t * regStates) {
             return;
     }
     printREGS(regStates);
-    //TODO: reinciar el shell
-    while(1);
-
+    char rstMsg[] = "Press any key to restart";
+    write(2, rstMsg, strlen(rstMsg));
+    read(0, rstMsg, 1);
+    //TODO: clearScreen
+    reboot();
 }
 
 static void zero_division() {

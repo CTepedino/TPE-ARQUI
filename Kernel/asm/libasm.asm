@@ -1,6 +1,5 @@
 GLOBAL cpuVendor
 GLOBAL getTime
-GLOBAL restart
 
 section .text
 	
@@ -39,4 +38,8 @@ getTime:
 
     mov rsp, rbp
     pop rbp
+    ret
+
+getRSP:
+    mov rax, rsp
     ret

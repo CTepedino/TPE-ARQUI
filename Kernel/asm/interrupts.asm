@@ -75,6 +75,8 @@ SECTION .text
 
 %macro exceptionHandler 1
 
+    push rax
+
     mov [regs], rax
     mov [regs+8], rbx
     mov [regs+8*2], rcx
@@ -91,19 +93,21 @@ SECTION .text
     mov [regs+8*13], r15
     mov [regs+8*14], rbp
     mov rax, rsp
-    add rax, 8*5
+    add rax, 8*6
     mov [regs+8*15], rax ;rsp previo
-    mov rax, [rsp]
+    mov rax, [rsp+8]
     mov [regs+8*16], rax ;rip previo
+    ;TODO: revisar que rsp y rip esten bien
+    pop rax
+    pushState
 
 	mov rdi, %1
 	mov rsi, regs
 	call exceptionDispatcher
+
+	popState
 	iretq
 %endmacro
-
-
-
 
 
 _hlt:
