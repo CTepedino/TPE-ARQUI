@@ -1,5 +1,6 @@
 GLOBAL cpuVendor
 GLOBAL getTime
+GLOBAL restart
 
 section .text
 	

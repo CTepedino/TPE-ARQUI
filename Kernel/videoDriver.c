@@ -48,7 +48,7 @@ typedef struct textPosition{
     uint32_t y;
 } textPosition;
 
-textPosition tp = {.x = 0, .y =0};
+textPosition tp = {.x = 0, .y = 0};
 
 
 void putPixel(uint32_t hexColor, uint32_t x, uint32_t y) {
@@ -61,36 +61,14 @@ void putPixel(uint32_t hexColor, uint32_t x, uint32_t y) {
     }
 }
 
-void screenClear(){
-    for(int x=0;x<VBE_mode_info->width;x++){
-        for(int y=0;y<VBE_mode_info->height;y++){
-            putPixel(0,x,y);
-        }
-    }
-    tp.x=0;
-    tp.y=0;
-}
-
-void putRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t base, uint32_t height){
-    if (x + base > VBE_mode_info->width){
-        base = VBE_mode_info->width-x;
-    }
-    if (y + height > VBE_mode_info->height){
-        height = VBE_mode_info->height -y;
-    }
-    for(int dx=0;dx<base;dx++){
-        for(int dy=0;dy<height;dy++){
-            putPixel(hexColor,dx+x,dy+y);
-        }
-    }
-}
-
 void putChar(uint32_t hexColorChar, uint32_t hexColorBG, char c){
     if (c == '\b'){
         putBackSpace();
     }
     else if (c == '\t'){
-        putString(hexColorChar, hexColorBG,"    ");
+        for(int i=0; i<4; i++) {
+            putChar(hexColorChar, hexColorBG, ' ');
+        }
     }
     else if (c == '\n'){
         putNewLine();
@@ -170,30 +148,6 @@ void scrollUpwards(){
     }
 }
 
-void putString(uint32_t hexColorChar, uint32_t hexColorBG,const char * string){
-    int i=0;
-    while (string[i]){
-        putChar(hexColorChar,hexColorBG,string[i]);
-        i++;
-    }
-}
-
-void putNumberBaseN(uint32_t hexColorChar, uint32_t hexColorBG,unsigned int number,char N){
-    if (number>=N) {
-        putNumberBaseN(hexColorChar, hexColorBG, number / N, N);
-    }
-    char c = number%N;
-    putChar(hexColorChar,hexColorBG, c>=10? c%10+'A': c+'0');
-}
-
-void putDec(uint32_t hexColorChar, uint32_t hexColorBG,unsigned int dec){
-    putNumberBaseN(hexColorChar, hexColorBG, dec, 10);
-}
-
-void putHex(uint32_t hexColorChar, uint32_t hexColorBG,unsigned int hex){
-    putNumberBaseN(hexColorChar,hexColorBG ,hex, 16);
-}
-
 int getWidth(){
     return VBE_mode_info->width;
 }
@@ -201,5 +155,3 @@ int getWidth(){
 int getHeight(){
     return VBE_mode_info->height;
 }
-
-//TODO: Despues tengo que sacar varias funciones de aca, solo deberia ser lo minimo necesario para imprimir (creo que solo pixel y char, todo lo demas con syscalls o en userland)

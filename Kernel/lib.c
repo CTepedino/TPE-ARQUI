@@ -1,4 +1,4 @@
-#include <stdint.h>
+#include <lib.h>
 
 void * memset(void * destination, int32_t c, uint64_t length)
 {
@@ -49,21 +49,31 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 	return destination;
 }
 
-char getMonth(){
-    return getTime(8);
-}
-char getDay(){
-    return getTime(7);
-}
-char getHour(){
-    char h = getTime(4);
-    if (h<3){
-        h+=24;
+
+
+unsigned long strlen(const char * str){
+    int i=0;
+    while(str[i]!=0){
+        i++;
     }
-    return h-3;
-}
-char getMin(){
-    return getTime(2);
+    return i;
 }
 
+int intlen(uint64_t n, uint8_t base){
+    int l = 1;
+    while (n>=base){
+        n/=base;
+        l++;
+    }
+    return l;
+}
+
+void intToString(uint64_t n, char * buffer, uint8_t base, uint8_t intLength) {;
+    int aux;
+    for(int i=intLength-1; i>=0;i--){
+        aux = n%base;
+        buffer[i] = aux<10? '0'+aux : 'A'+aux-10;
+        n/=base;
+    }
+}
 
