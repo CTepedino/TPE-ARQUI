@@ -45,22 +45,16 @@ void * initializeKernelBinary()
 	};
 	loadModules(&endOfKernelBinary, moduleAddresses);
 	clearBSS(&bss, &endOfKernel - &bss);
-    load_idt();
 	return getStackBase();
 }
 
-extern void scRead(uint64_t fd, char *buffer, uint64_t length);
-extern void scWrite(uint64_t fd, const char * string, uint64_t count);
+
+extern char * testRead();
+
+
 
 int main(){
+    load_idt();
 
-	load_idt();
-    ((EntryPoint) sampleCodeModuleAddress)();
-    /*char string[60];
-    char * buffer = &string[0];
-    scRead(0, buffer, 10);
-    putString(0xFFFFFF, 0, string); //TODO: esto esta para probar el read, creo que convendria implementar alguna version simplificada del malloc para simplificar las llamadas
-    scWrite(1, "out\n", 4);
-    scWrite(2, "err\n", 4); */
-	return 0;
+    return ((EntryPoint) sampleCodeModuleAddress)();
 }

@@ -75,12 +75,31 @@ SECTION .text
 
 
 %macro exceptionHandler 1
-	pushState
 
-	mov rdi, %1 ; pasaje de parametro
+    mov [regs], rax
+    mov [regs+8], rbx
+    mov [regs+8*2], rcx
+    mov [regs+8*3], rdx
+    mov [regs+8*4], rsi
+    mov [regs+8*5], rdi
+    mov [regs+8*6], r8
+    mov [regs+8*7], r9
+    mov [regs+8*8], r10
+    mov [regs+8*9], r11
+    mov [regs+8*10], r12
+    mov [regs+8*11], r13
+    mov [regs+8*12], r14
+    mov [regs+8*13], r15
+    mov [regs+8*14], rbp
+    mov rax, rsp
+    add rax, 8*3
+    mov [regs+8*15], rax ;rsp previo
+    mov rax, [rsp]
+    mov [regs+8*16], rax ;rip previo
+
+	mov rdi, %1
+	mov rsi, regs
 	call exceptionDispatcher
-
-	popState
 	iretq
 %endmacro
 
@@ -145,12 +164,16 @@ _irq05Handler:
 _exception0Handler:
 	exceptionHandler 0
 
+;Invalid Opcode Exception
+_exception1Handler:
+    exceptionHandler 1
+
 ;System Calls
 _syscallHandler:
     mov rcx, r10
     push rax
     call syscallDispatcher
-    pop rax
+    add rsp, 8
     iretq
 ; syscalls params:	RDI	RSI	RDX	R10	R8	R9 RAX
 ; syscallHandler:	RDI RSI RDX R10 R8  R9 RAX (RAX por stack)
@@ -166,3 +189,4 @@ haltcpu:
 
 SECTION .bss
 	aux resq 1
+    regs resb 8*17
