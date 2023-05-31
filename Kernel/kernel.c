@@ -49,12 +49,8 @@ void * initializeKernelBinary()
 }
 
 
-extern char * testRead();
-
-
 
 int main(){
     load_idt();
-
     return ((EntryPoint) sampleCodeModuleAddress)();
 }

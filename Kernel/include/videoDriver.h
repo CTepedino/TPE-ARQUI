@@ -12,4 +12,6 @@ void scrollUpwards();
 
 int getWidth();
 int getHeight();
+
+void setTextPosition(uint32_t x, uint32_t y);
 #endif

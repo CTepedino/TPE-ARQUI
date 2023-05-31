@@ -1,26 +1,33 @@
 global sys_write
 global sys_read
+global sys_textPosition
+global sys_screenInfo
 global sys_time
 global sys_regData
 
 section .text
 
-sys_read:
-    mov rax, 0
+%macro systemcall 1
+    mov rax, %1
     int 0x80
     ret
+%endmacro
+
+sys_read:
+    systemcall 0
 
 sys_write:
-    mov rax, 1
-    int 0x80
-    ret
+    systemcall 1
+
+sys_textPosition:
+    systemcall 2
+
+sys_screenInfo:
+    systemcall 3
 
 sys_time:
-    mov rax, 2
-    int 0x80
-    ret
+    systemcall 4
 
 sys_regData:
-    mov rax, 3
-    int 0x80
-    ret
+    systemcall 5
+

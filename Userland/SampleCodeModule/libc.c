@@ -16,6 +16,14 @@ char getChar(){
     return c;
 }
 
+void textPosition(uint32_t x, uint32_t y){
+    sys_textPosition(x,y);
+}
+
+void screenInfo(uint32_t * width, uint32_t * height){
+    sys_screenInfo(width, height);
+}
+
 void scan(char * buf, uint64_t length){
     if (length == 0)
         return;
