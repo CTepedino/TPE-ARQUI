@@ -1,3 +1,0 @@
-/home/cnt/Desktop/TPE/Git-tpe/TPE-ARQUI/cmake-build-debug/CMakeFiles/TPE_ARQUI.dir
-/home/cnt/Desktop/TPE/Git-tpe/TPE-ARQUI/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/cnt/Desktop/TPE/Git-tpe/TPE-ARQUI/cmake-build-debug/CMakeFiles/rebuild_cache.dir
