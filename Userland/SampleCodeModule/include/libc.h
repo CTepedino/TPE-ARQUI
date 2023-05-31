@@ -19,4 +19,6 @@ void intToString(uint64_t num, char * string);
 
 void getTime(char * buf);
 
+void fillRegData(uint64_t regData[17]);
+
 #endif

@@ -67,3 +67,7 @@ void getTime(char * buf){
     intToString((time >> 16) & 0xFF, p);
     p[8] = 0;
 }
+
+void fillRegData(uint64_t regData[17]){
+    sys_regData(regData);
+}
