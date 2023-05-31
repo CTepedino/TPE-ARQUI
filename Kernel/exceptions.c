@@ -3,15 +3,18 @@
 #define ZERO_EXCEPTION_ID 0x0
 #define INVALID_OP_ID 6
 
-static char * regs[] = {"RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "R8", "R9", "R10",
+static char * regs[] = {"RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "R8 ", "R9 ", "R10",
                         "R11", "R12", "R13", "R14", "R15", "RBP", "RSP", "RIP"};
 
 static void printERR(const char * message);
 static void printREGS(uint64_t * regStates);
+
 static void zero_division();
 static void invalid_op_code();
 
+
 void exceptionDispatcher(int exception, uint64_t * regStates) {
+
 	switch (exception){
         case ZERO_EXCEPTION_ID:
             zero_division();
@@ -24,6 +27,7 @@ void exceptionDispatcher(int exception, uint64_t * regStates) {
     }
     printREGS(regStates);
     //TODO: reinciar el shell
+    while(1);
 
 }
 

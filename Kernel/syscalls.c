@@ -3,7 +3,9 @@
 #include <videoDriver.h>
 #include <keyboardDriver.h>
 #include <lib.h>
+#include <interrupts.h>
 
+#define SYSCALL_COUNT 7
 
 void read(uint64_t fd, char *buffer, uint64_t length);
 void write(uint64_t fd, const char * string, uint64_t count);
@@ -13,29 +15,30 @@ void textPosition(uint32_t x, uint32_t y);
 void screenInfo(uint32_t * width, uint32_t * height);
 void getRTC(uint8_t id, uint32_t * time);
 
-//TODO: el switch es provisorio, despues lo cambio a un array
+
 void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t rax){
     switch(rax){
         case 0:
-            read(rdi, rsi, rdx);
+            read(rdi, (char*)rsi, rdx);
             return;
         case 1:
-            write(rdi, rsi, rdx);
+            write(rdi, (char*)rsi, rdx);
             return;
         case 2:
-            textPosition(rdi, rsi);
+            colorWrite(rdi, rsi, (char*)rdx, rcx);
             return;
         case 3:
-            screenInfo(rdi, rsi);
+            writeMatrix((const uint64_t**)rdi);
             return;
         case 4:
-            getRTC(rdi, rsi);
+            screenInfo((uint32_t*)rdi, (uint32_t*)rsi);
             return;
         case 5:
-            colorWrite(rdi, rsi, rdx, rcx);
+            textPosition(rdi, rsi);
             return;
         case 6:
-            writeMatrix(rdi);
+            getRTC(rdi, (uint32_t*)rsi);
+            return;
     }
 }
 

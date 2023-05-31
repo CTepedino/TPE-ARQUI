@@ -59,15 +59,6 @@ unsigned long strlen(const char * str){
     return i;
 }
 
-int intlen(uint64_t n, uint8_t base){
-    int l = 1;
-    while (n>=base){
-        n/=base;
-        l++;
-    }
-    return l;
-}
-
 void intToString(uint64_t n, char * buffer, uint8_t base, uint8_t intLength) {;
     int aux;
     for(int i=intLength-1; i>=0;i--){

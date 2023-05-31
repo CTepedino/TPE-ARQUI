@@ -20,6 +20,7 @@ EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 EXTERN syscallDispatcher
 
+
 SECTION .text
 
 %macro pushState 0
@@ -72,8 +73,6 @@ SECTION .text
 	iretq
 %endmacro
 
-
-
 %macro exceptionHandler 1
 
     mov [regs], rax
@@ -104,6 +103,9 @@ SECTION .text
 %endmacro
 
 
+
+
+
 _hlt:
 	sti
 	hlt
@@ -117,6 +119,9 @@ _cli:
 _sti:
 	sti
 	ret
+
+
+
 
 picMasterMask:
 	push rbp
@@ -133,6 +138,8 @@ picSlaveMask:
     out	0A1h,al
     pop     rbp
     retn
+
+
 
 
 ;8254 Timer (Timer Tick)
@@ -160,6 +167,7 @@ _irq05Handler:
 	irqHandlerMaster 5
 
 
+
 ;Zero Division Exception
 _exception0Handler:
 	exceptionHandler 0
@@ -168,6 +176,8 @@ _exception0Handler:
 _exception1Handler:
     exceptionHandler 1
 
+
+
 ;System Calls
 _syscallHandler:
     mov rcx, r10
@@ -175,11 +185,7 @@ _syscallHandler:
     call syscallDispatcher
     add rsp, 8
     iretq
-; syscalls params:	RDI	RSI	RDX	R10	R8	R9 RAX
-; syscallHandler:	RDI RSI RDX R10 R8  R9 RAX (RAX por stack)
-; params in C are:	RDI RSI RDX RCX R8  R9
-;Le robe esto a apuntes Marengo xd. syscalls params es como hay que mandarlo por asm.
-;TODO: borrar este comentario
+    ;los parametros de las syscalls se pasan como en linux: RAX para el ID, y los otros argumentos que se necesiten por RDI, RSI, RDX, R10, R8, R9.
 
 haltcpu:
 	cli

@@ -67,15 +67,15 @@ void intToString(uint64_t num, char * str) {
 }
 
 void getTime(char * buf){
-    char * p = buf;
-    uint64_t time = sys_time();
+    /*char * p = buf;
+    uint64_t time = sys_getRTC(id);
 
     intToString((time & 0xFF), p);
     p[2] = ':';
     intToString((time >> 8) & 0xFF, p);
     p[5] = ':';
     intToString((time >> 16) & 0xFF, p);
-    p[8] = '\n';
+    p[8] = '\n';*/
 }
 
 void fillRegData(uint64_t regData[17]){
