@@ -4,7 +4,7 @@
 #include <libasm.h>
 
 #define READBUF_LENGTH 50
-#define COMMANDS_LENGTH 0
+#define COMMANDS_LENGTH 5
 #define TIME_LENGTH 8
 
 const char* helpstring = "";
