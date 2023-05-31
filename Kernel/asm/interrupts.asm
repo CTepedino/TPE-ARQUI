@@ -91,7 +91,7 @@ SECTION .text
     mov [regs+8*13], r15
     mov [regs+8*14], rbp
     mov rax, rsp
-    add rax, 8*3
+    add rax, 8*5
     mov [regs+8*15], rax ;rsp previo
     mov rax, [rsp]
     mov [regs+8*16], rax ;rip previo

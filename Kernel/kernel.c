@@ -45,8 +45,6 @@ void * initializeKernelBinary()
 	return getStackBase();
 }
 
-
-
 int main(){
     load_idt();
     return ((EntryPoint) sampleCodeModuleAddress)();
