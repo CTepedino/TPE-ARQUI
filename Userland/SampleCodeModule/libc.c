@@ -28,8 +28,10 @@ void scan(char * buf, uint64_t length){
             putChar(c);
             return;
         }
-        if (c == '\b')
+        if (c == '\b'){
             count--;
+            putChar(c);
+        }
         else{
             putChar(c);
             if(count < length - 1)
@@ -65,7 +67,7 @@ void getTime(char * buf){
     intToString((time >> 8) & 0xFF, p);
     p[5] = ':';
     intToString((time >> 16) & 0xFF, p);
-    p[8] = 0;
+    p[8] = '\n';
 }
 
 void fillRegData(uint64_t regData[17]){

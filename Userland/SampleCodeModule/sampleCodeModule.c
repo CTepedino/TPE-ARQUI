@@ -5,9 +5,14 @@
 
 #define READBUF_LENGTH 50
 #define COMMANDS_LENGTH 5
-#define TIME_LENGTH 8
+#define TIME_LENGTH 9
 
-const char* helpstring = "";
+const char* helpstring =
+"HELP                 Muestra informacion sobre los distintos programas disponibles.\n"
+"TIME                 Imprime en pantalla la hora del sistema.\n"
+"DIVIDEBYZERO         Programa que demuestra el funcionamiento de la excepcion \"Divicion por cero\".\n"
+"INVALIDOPCODE        Programa que demuestra el funcionamiento de la excepcion \"Codigo de operacion invalido\".\n"
+"PRINTREG             Imprime en pantalla informacion sobre todos los registros del procesador.\n\n";
 
 static void help(){
 	print(helpstring, strlen(helpstring));
@@ -48,7 +53,7 @@ static void time(){
 	return;
 }
 
-static const char* commands[] = {"help", "time", "dividebyzero", "invalidopcode", "printReg"}; //Aca van los strings de los nombres de los commandos
+static const char* commands[] = {"help", "time", "dividebyzero", "invalidopcode", "printreg"}; //Aca van los strings de los nombres de los commandos
 static void (*commands_functions[])() = {help, time, divideByZero, invalidOpCode, printReg}; //Aca van las funciones de los comandos
 
 static int indexCommand(char* readbuf) {
@@ -63,12 +68,14 @@ static int indexCommand(char* readbuf) {
 
 
 int main() {
-	print("Welcome!\n", 9);
+	print("Bienvenido!\n\nQue modulo desea correr?\n\n", 39);
+	help();
+	print("Para correr los modulos, ingrese el comando correspondiente y presione enter.\n\n", 79);
 
 	while(1) {
 		print("$ ", 2);
 		char command[READBUF_LENGTH] = {0};
-		scan(command,READBUF_LENGTH); // No anda porque getChar no anda (Aunque sys_read si anda);
+		scan(command,READBUF_LENGTH);
 
 		int index;
 		if((index = indexCommand(command))>=0) {
