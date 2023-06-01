@@ -26,8 +26,8 @@ static const char* registerNames[17] = {
 };
 
 static void printReg(){
-	uint64_t regData[17];
-	fillRegData(regData);
+	/*uint64_t regData[17];
+	getREGS(regData);
 	char buf[18];
 	for (int i = 0; i < 17; i++) {
 		print(registerNames[i], 3);
@@ -38,7 +38,7 @@ static void printReg(){
 			print("\n", 1);
 		else
 			print("   ", 3);
-	}
+	}*/
 }
 
 static void divideByZero(){

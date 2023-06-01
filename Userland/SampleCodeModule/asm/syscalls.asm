@@ -5,7 +5,7 @@ GLOBAL sys_writeMatrix
 GLOBAL sys_screenInfo
 GLOBAL sys_textPosition
 GLOBAL sys_getRTC
-GLOBAL sys_regData
+GLOBAL sys_regdump
 GLOBAL sys_playSound
 
 section .text
@@ -37,9 +37,8 @@ sys_textPosition:
 sys_getRTC:
     systemcall 6
 
-
-sys_regData:
-    ret ;TODO
+sys_regdump:
+    systemcall 7
 
 sys_playSound:
     ret ;TODO

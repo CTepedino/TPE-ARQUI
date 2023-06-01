@@ -10,8 +10,6 @@ void sys_writeMatrix(uint64_t ** matrix);
 void sys_screenInfo(uint32_t * width, uint32_t * height);
 void sys_textPosition(uint32_t x, uint32_t y);
 void sys_getRTC(uint8_t id, uint32_t * time);
-
-
-void sys_regData(uint64_t regData[17]);
+void sys_regdump(uint64_t * buffer);
 
 #endif

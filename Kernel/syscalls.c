@@ -14,7 +14,7 @@ void writeMatrix(const uint64_t ** matrix);
 void textPosition(uint32_t x, uint32_t y);
 void screenInfo(uint32_t * width, uint32_t * height);
 void getRTC(uint8_t id, uint32_t * time);
-
+void regdump(uint64_t * buffer);
 
 void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t rax){
     switch(rax){
@@ -40,7 +40,7 @@ void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
             getRTC(rdi, (uint32_t*)rsi);
             return;
         case 7:
-            //getREGS();
+            regdump((uint64_t *)rdi);
             return;
         case 8:
             //playSound(); ?
@@ -102,3 +102,6 @@ void writeMatrix(const uint64_t **matrix){
     }
 }
 
+void regdump(uint64_t * buffer){
+    buffer = getREGS();
+}

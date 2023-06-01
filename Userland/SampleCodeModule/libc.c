@@ -87,8 +87,8 @@ void getTime(char * buf){
     p[8] = '\n';
 }
 
-void fillRegData(uint64_t regData[17]){
-    sys_regData(regData);
+void getREGS(char * buffer){
+    sys_regdump(buffer);
 }
 
 void drawScreen(uint64_t ** matrix){
