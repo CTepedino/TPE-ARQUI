@@ -90,3 +90,7 @@ void getTime(char * buf){
 void fillRegData(uint64_t regData[17]){
     sys_regData(regData);
 }
+
+void drawScreen(uint64_t ** matrix){
+    sys_writeMatrix(matrix);
+}

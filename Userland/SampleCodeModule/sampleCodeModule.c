@@ -2,10 +2,11 @@
 #include <stdint.h>
 #include <string.h>
 #include <libasm.h>
+#include <pong.h>
 
 
 #define READBUF_LENGTH 50
-#define COMMANDS_LENGTH 5
+#define COMMANDS_LENGTH 6
 #define TIME_LENGTH 9
 
 const char* helpstring =
@@ -13,7 +14,8 @@ const char* helpstring =
 "TIME                 Imprime en pantalla la hora del sistema.\n"
 "DIVIDEBYZERO         Programa que demuestra el funcionamiento de la excepcion \"Divicion por cero\".\n"
 "INVALIDOPCODE        Programa que demuestra el funcionamiento de la excepcion \"Codigo de operacion invalido\".\n"
-"PRINTREG             Imprime en pantalla informacion sobre todos los registros del procesador.\n\n";
+"PRINTREG             Imprime en pantalla informacion sobre todos los registros del procesador.\n"
+"PONG                 Abre el juego Pong. El paddle izquierdo se controla con \'W\' y \'S\'.El derecho con \'I\' y \'K\'.\n\n";
 
 static void help(){
 	print(helpstring, strlen(helpstring));
@@ -54,8 +56,8 @@ static void time(){
 	return;
 }
 
-static const char* commands[] = {"help", "time", "dividebyzero", "invalidopcode", "printreg"}; //Aca van los strings de los nombres de los commandos
-static void (*commands_functions[])() = {help, time, divideByZero, invalidOpCode, printReg}; //Aca van las funciones de los comandos
+static const char* commands[] = {"help", "time", "dividebyzero", "invalidopcode", "printreg", "pong"}; //Aca van los strings de los nombres de los commandos
+static void (*commands_functions[])() = {help, time, divideByZero, invalidOpCode, printReg, pong}; //Aca van las funciones de los comandos
 
 static int indexCommand(char* readbuf) {
 	char *p = readbuf;

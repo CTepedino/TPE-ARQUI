@@ -24,4 +24,7 @@ void fillRegData(uint64_t regData[17]);
 void textPosition(uint32_t x, uint32_t y);
 
 void screenInfo(uint32_t * width, uint32_t * height);
+
+void drawScreen(uint64_t ** matrix);
+
 #endif
