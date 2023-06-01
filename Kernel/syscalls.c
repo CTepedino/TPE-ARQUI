@@ -5,7 +5,7 @@
 #include <lib.h>
 #include <interrupts.h>
 
-#define SYSCALL_COUNT 7
+#define SYSCALL_COUNT 9
 
 void read(uint64_t fd, char *buffer, uint64_t length);
 void write(uint64_t fd, const char * string, uint64_t count);
@@ -39,6 +39,12 @@ void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
         case 6:
             getRTC(rdi, (uint32_t*)rsi);
             return;
+        case 7:
+            //getREGS();
+            return;
+        case 8:
+            //playSound(); ?
+            return
     }
 }
 

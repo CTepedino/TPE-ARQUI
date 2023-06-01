@@ -77,7 +77,7 @@ static unsigned int scr_height;
 int main() {
     screenInfo(&scr_width, &scr_height);
     textPosition(0, scr_height);
-	print("Bienvenido!\n\nQue modulo desea correr?\n\n", 39);
+    print("Bienvenido!\n\nQue modulo desea correr?\n\n", 39);
 	help();
 	print("Para correr los modulos, ingrese el comando correspondiente y presione enter.\n\n", 79);
 
@@ -95,6 +95,5 @@ int main() {
 			print(": command not found\n", 20);
 		}
 	}
-
 	return 0;
 }
