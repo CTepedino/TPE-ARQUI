@@ -14,6 +14,8 @@ int ballSpeedX = 1;
 int ballSpeedY = 1;
 int paddleLeftX, paddleLeftY, paddleRightX, paddleRightY;
 int paddleHeight;
+char rightScore = '0';
+char leftScore = '0';
 
 
 
@@ -24,7 +26,7 @@ static void drawBoard(){
                 screen[i][j] = WHITE;
         }
     }
-    drawScreen((uint64_t **) screen);
+    drawScreen(screen);
 }
 
 static void resetBall(){
@@ -32,13 +34,24 @@ static void resetBall(){
     ballY = height/2;
 }
 
+static void updateScore(){
+    textPosition(width/4, height*9/10);
+    putChar(leftScore);
+    textPosition(width*3/4, height*9);
+    putChar(rightScore);
+}
+
 static void updateBall(){
     ballX += ballSpeedX;
     ballY += ballSpeedY;
     if (ballX == 0){ //Right side scores
+        rightScore += 1;
+        updateScore();
         resetBall();
     }
     if (ballY == width){ //Left side scores
+        leftScore += 1;
+        updateScore();
         resetBall();
     }
     if (ballX == paddleLeftX + 1 && ballY >= paddleLeftY && ballY <= paddleLeftY + paddleHeight){ //Hit left paddle
@@ -52,20 +65,37 @@ static void updateBall(){
     }
 }
 
+static void movePaddle(char key){
+    if (key == 'w'){
+        paddleLeftY += 1;
+    }
+    if (key == 's'){
+        paddleLeftY -= 1;
+    }
+    if(key == 'i'){
+        paddleRightY += 1;
+    }
+    if(key == 'k'){
+        paddleRightY -= 1;
+    }
+}
+
+
 void pong(){
     screenInfo(&width, &height);
     resetBall();
+    updateScore();
     paddleLeftX = width/8;
     paddleRightX = width*7/8;
     paddleLeftY = height/2;
     paddleRightY = height/2; 
     paddleHeight = height/10;
-    //char key;
-
+    char key;
 
     while (1){
         drawBoard();
         updateBall();
-        //key = getChar();
+        key = getChar();
+        movePaddle(key);
     }    
 }
