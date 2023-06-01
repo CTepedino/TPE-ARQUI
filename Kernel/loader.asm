@@ -19,3 +19,4 @@ reboot:
     call getStackBase
     mov rsp, rax
     call main
+    jmp hang
