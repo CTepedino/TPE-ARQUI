@@ -39,7 +39,3 @@ getTime:
     mov rsp, rbp
     pop rbp
     ret
-
-getRSP:
-    mov rax, rsp
-    ret

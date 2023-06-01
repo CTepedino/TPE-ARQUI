@@ -1,8 +1,7 @@
 global loader
-global reboot
 extern main
 extern initializeKernelBinary
-extern getStackBase
+
 
 section .text
 
@@ -15,8 +14,3 @@ hang:
 	hlt	; halt machine should kernel return
 	jmp hang
 
-reboot:
-    call getStackBase
-    mov rsp, rax
-    call main
-    jmp hang

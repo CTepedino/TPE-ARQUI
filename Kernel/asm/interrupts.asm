@@ -75,38 +75,11 @@ SECTION .text
 %endmacro
 
 %macro exceptionHandler 1
-
-    push rax
-
-    mov [regs], rax
-    mov [regs+8], rbx
-    mov [regs+8*2], rcx
-    mov [regs+8*3], rdx
-    mov [regs+8*4], rsi
-    mov [regs+8*5], rdi
-    mov [regs+8*6], r8
-    mov [regs+8*7], r9
-    mov [regs+8*8], r10
-    mov [regs+8*9], r11
-    mov [regs+8*10], r12
-    mov [regs+8*11], r13
-    mov [regs+8*12], r14
-    mov [regs+8*13], r15
-    mov [regs+8*14], rbp
-    mov rax, rsp
-    add rax, 8*6
-    mov [regs+8*15], rax ;rsp previo
-    mov rax, [rsp+8]
-    mov [regs+8*16], rax ;rip previo
-    ;TODO: revisar que rsp y rip esten bien
-    pop rax
     pushState
-
-	mov rdi, %1
-	mov rsi, regs
-	call exceptionDispatcher
-
-	popState
+    mov rdi, %1
+    mov rsi, rsp
+    call exceptionDispatcher
+    popState
 	iretq
 %endmacro
 
@@ -200,4 +173,3 @@ haltcpu:
 
 SECTION .bss
 	aux resq 1
-    regs resb 8*17
