@@ -2,31 +2,26 @@
 #include <stdint.h>
 #include <libc.h>
 
-#define WHITE 0xFFFFFF
-#define MAX_HEIGHT 1000
-#define MAX_WIDTH  1000
+#define PADDLE_HEIGHT 50
+#define PADDLE_WIDTH 10
+#define BALL_RADIUS 5
 
-char screen[MAX_HEIGHT][MAX_WIDTH] = {0};
+
 uint32_t width;
 uint32_t height;
-int ballX, ballY;
+int ballX, ballY; //Centro de la pelota
 int ballSpeedX = 1; 
 int ballSpeedY = 1;
-int paddleLeftX, paddleLeftY, paddleRightX, paddleRightY;
-int paddleHeight;
+int paddleLeftX, paddleLeftY, paddleRightX, paddleRightY; //Punto inferior izquierdo del rectangulo
 char rightScore = '0';
 char leftScore = '0';
 
 
 
 static void drawBoard(){
-    for(int i = 0; i < height; i++){
-        for(int j = 0; j < width; j++){
-            if((j == paddleLeftX && i >= paddleLeftY && i <= paddleLeftY + paddleHeight) || (j == paddleRightX && i >= paddleRightY && i <= paddleRightY + paddleHeight) || (j == ballX && i == ballY))
-                screen[i][j] = WHITE;
-        }
-    }
-    //drawScreen(screen);
+    drawRectangle(paddleLeftX, paddleLeftY, PADDLE_WIDTH, PADDLE_HEIGHT);
+    drawRectangle(paddleRightX, paddleRightY, PADDLE_WIDTH, PADDLE_HEIGHT);
+    drawCircle(ballX, ballY, BALL_RADIUS);
 }
 
 static void resetBall(){
@@ -48,16 +43,18 @@ static void updateBall(){
         rightScore += 1;
         updateScore();
         resetBall();
+        //playSound();
     }
     if (ballY == width){ //Left side scores
         leftScore += 1;
         updateScore();
         resetBall();
+        //playSound();
     }
-    if (ballX == paddleLeftX + 1 && ballY >= paddleLeftY && ballY <= paddleLeftY + paddleHeight){ //Hit left paddle
+    if (ballX - BALL_RADIUS == paddleLeftX + PADDLE_WIDTH && ballY >= paddleLeftY && ballY <= paddleLeftY + PADDLE_HEIGHT){ //Hit left paddle
         ballSpeedX = 1;
     }
-    if (ballX == paddleRightX + 1 && ballY >= paddleRightY && ballY <= paddleRightY + paddleHeight){ //Hit right paddle
+    if (ballX + BALL_RADIUS == paddleRightX && ballY >= paddleRightY && ballY <= paddleRightY + PADDLE_HEIGHT){ //Hit right paddle
         ballSpeedX = -1;
     }
     if (ballY == 0 || ballY == height){ //Hit top or bottom of screen
@@ -82,6 +79,7 @@ static void movePaddle(char key){
 
 
 void pong(){
+    clearScreen();
     screenInfo(&width, &height);
     resetBall();
     updateScore();
@@ -89,7 +87,6 @@ void pong(){
     paddleRightX = width*7/8;
     paddleLeftY = height/2;
     paddleRightY = height/2; 
-    paddleHeight = height/10;
     char key;
 
     while (1){

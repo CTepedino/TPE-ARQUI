@@ -6,6 +6,9 @@ GLOBAL sys_textPosition
 GLOBAL sys_getRTC
 GLOBAL sys_regdump
 GLOBAL sys_playSound
+GLOBAL sys_putRectangle
+GLOBAL sys_putCircle
+GLOBAL sys_clear
 
 section .text
 
@@ -35,6 +38,15 @@ sys_getRTC:
 
 sys_regdump:
     systemcall 6
+
+sys_clear:
+    systemcall 7
+
+sys_putRectangle:
+    systemcall 8
+
+sys_putCircle:
+    systemcall 9
 
 sys_playSound:
     ret ;TODO

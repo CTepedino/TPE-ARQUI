@@ -35,4 +35,10 @@ void drawScreen(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const ch
 
 void getREGS(uint64_t * buffer);
 
+void clearScreen();
+
+void drawRectangle(uint32_t x, uint32_t y, uint32_t base, uint32_t height);
+
+void drawCircle(uint32_t x, uint32_t y, uint32_t radius);
+
 #endif

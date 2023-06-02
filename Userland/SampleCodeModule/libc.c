@@ -103,3 +103,15 @@ uint32_t getMinute(){
     sys_getRTC(2,&time);
     return time;
 }
+
+void clearScreen(){
+    sys_clear();
+}
+
+void drawRectangle(uint32_t x, uint32_t y, uint32_t base, uint32_t height){
+    sys_putRectangle(x,y,base,height);
+}
+
+void drawCircle(uint32_t x, uint32_t y, uint32_t radius){
+    sys_putCircle(x,y,radius);
+}
