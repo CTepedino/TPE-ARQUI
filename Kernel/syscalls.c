@@ -5,12 +5,12 @@
 #include <lib.h>
 #include <interrupts.h>
 
-#define SYSCALL_COUNT 9
+#define SYSCALL_COUNT 8
+
 
 void read(uint64_t fd, char *buffer, uint64_t length);
 void write(uint64_t fd, const char * string, uint64_t count);
-void colorWrite(uint64_t charColor,uint64_t bgColor, const char * string, uint64_t count);
-void writeMatrix(const uint64_t ** matrix);
+void writeMatrix(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const char matrix[height][width]);
 void textPosition(uint32_t x, uint32_t y);
 void screenInfo(uint32_t * width, uint32_t * height);
 void getRTC(uint8_t id, uint32_t * time);
@@ -25,24 +25,21 @@ void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
             write(rdi, (char*)rsi, rdx);
             return;
         case 2:
-            colorWrite(rdi, rsi, (char*)rdx, rcx);
+            writeMatrix(rdi, rsi, rdx, rcx, r8);
             return;
         case 3:
-            writeMatrix((const uint64_t**)rdi);
-            return;
-        case 4:
             screenInfo((uint32_t*)rdi, (uint32_t*)rsi);
             return;
-        case 5:
+        case 4:
             textPosition(rdi, rsi);
             return;
-        case 6:
+        case 5:
             getRTC(rdi, (uint32_t*)rsi);
             return;
-        case 7:
+        case 6:
             regdump((uint64_t *)rdi);
             return;
-        case 8:
+        case 7:
             //playSound(); ?
             return;
     }
@@ -61,13 +58,19 @@ void read(uint64_t fd, char *buffer, uint64_t length){
     }
 }
 void write(uint64_t fd, const char * string, uint64_t count){
+    uint32_t charColor;
     switch(fd){
         case STDOUT:
-            colorWrite(0xFFFFFF, 0, string, count);
-            return;
+            charColor = 0xFFFFFF;
+            break;
         case STDERR:
-            colorWrite(0xFF0000, 0, string, count);
+            charColor = 0xFF0000;
+            break;
+        default:
             return;
+    }
+    for(int i=0;i<count;i++){
+        putChar(charColor, 0, string[i]);
     }
 }
 
@@ -86,21 +89,25 @@ void getRTC(uint8_t id, uint32_t * time) {
     }
 }//id: 0 -> secs, 2 -> mins, 4 -> hrs, 6-> diaSem, 7 -> diaMes, 8 -> mes, 9-> year. 1, 3 y 5 son alarmas. 0xA en adelante no necesitamos
 
-void colorWrite(uint64_t charColor, uint64_t bgColor, const char * string, uint64_t count){
-    for(int i =0; i<count; i++){
-        putChar(charColor, bgColor, string[i]);
-    }
-}
-
-void writeMatrix(const uint64_t **matrix){
-    uint64_t h = getHeight();
-    uint64_t w = getWidth();
-    for(int j=0; j<h; j++){
-        for (int i=0; i<w ; i++) {
-            putPixel(matrix[i][j],i, j);
+void writeMatrix(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const char matrix[height][width]){
+    uint32_t h = getHeight();
+    uint32_t w = getWidth();
+    x = x < w ? x : w;
+    y = y < h ? y : h;
+    width = width+x < w ? width : w - x;
+    height = height + y < h ? height : h - y;
+    for(int i=0; i<height;i++){
+        for(int j=0; j<width;j++){
+            if (matrix[i][j]){
+                putPixel(0xFFFFFF,j,i);
+            }
+            else{
+                putPixel(0,j,i);
+            }
         }
     }
 }
+
 
 void regdump(uint64_t * buffer){
     buffer = getREGS();

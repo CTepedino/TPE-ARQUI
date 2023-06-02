@@ -160,3 +160,4 @@ void setTextPosition(uint32_t x, uint32_t y){
     tp.x = x < VBE_mode_info->width ? x : VBE_mode_info->width;
     tp.y = y < VBE_mode_info->height ? y : VBE_mode_info->height;
 }
+

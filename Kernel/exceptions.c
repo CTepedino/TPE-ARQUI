@@ -36,7 +36,14 @@ void exceptionDispatcher(int exception, uint64_t * RSP) {
     write(2, rstMsg, strlen(rstMsg));
     read(0, rstMsg, 1);
 
-    //TODO: clearScreen
+    uint32_t w,h;
+    w = getWidth();
+    h = getHeight();
+    for(uint32_t i=0; i<w;i++){
+        for(uint32_t j=0;j<h;j++){
+            putPixel(0, i,j);
+        }
+    }
 
     RSP[15] = getSampleCodeModuleAddress();
     RSP[18] = getStackBase();
@@ -72,7 +79,6 @@ static void printREGS(uint64_t * RSP) {
    printREG(regs[17], 6, RSP[17], regBuffer);
 
 }
-
 
 static void printREG(char * regName, int nameLen, uint64_t reg, char * buffer){
     write(2, regName, nameLen);
