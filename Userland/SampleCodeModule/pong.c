@@ -26,7 +26,7 @@ static void drawBoard(){
                 screen[i][j] = WHITE;
         }
     }
-    drawScreen(screen);
+    //drawScreen(screen);
 }
 
 static void resetBall(){
