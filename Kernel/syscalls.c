@@ -14,7 +14,7 @@ void write(uint64_t fd, const char * string, uint64_t count);
 void writeMatrix(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const char matrix[height][width]);
 void textPosition(uint32_t x, uint32_t y);
 void screenInfo(uint32_t * width, uint32_t * height);
-void getRTC(uint8_t id, uint32_t * time);
+void getRTC(timeStruct * time);
 void regdump(uint64_t * buffer);
 
 void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t rax){
@@ -35,7 +35,7 @@ void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
             textPosition(rdi, rsi);
             return;
         case 5:
-            getRTC(rdi, (uint32_t*)rsi);
+            getRTC((timeStruct *) rdi);
             return;
         case 6:
             regdump((uint64_t *)rdi);
@@ -84,11 +84,15 @@ void screenInfo(uint32_t * width, uint32_t * height){
     *width  = getWidth();
 }
 
-void getRTC(uint8_t id, uint32_t * time) {
-    if (id <= 9){
-    *time = getTime(id);
-    }
-}//id: 0 -> secs, 2 -> mins, 4 -> hrs, 6-> diaSem, 7 -> diaMes, 8 -> mes, 9-> year. 1, 3 y 5 son alarmas. 0xA en adelante no necesitamos
+void getRTC(timeStruct * time) {
+    time->year = getTime(9);
+    time->month = getTime(8);
+    time->dayOfMonth = getTime(7);
+    time->dayOfWeek = getTime(6);
+    time->hour = getTime(4);
+    time->minute = getTime(2);
+    time->second = getTime(0);
+}
 
 void writeMatrix(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const char matrix[height][width]){
     uint32_t h = getHeight();

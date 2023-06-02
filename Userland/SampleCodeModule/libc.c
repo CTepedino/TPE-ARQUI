@@ -88,25 +88,8 @@ void drawScreen(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const ch
     sys_writeMatrix(x,y,width,height,matrix);
 }
 
-uint32_t getDay(){
-    uint32_t time;
-    sys_getRTC(7,&time);
-    return time;
-}
-uint32_t getMonth(){
-    uint32_t time;
-    sys_getRTC(8,&time);
-    return time;
-}
-uint32_t getHour(){
-    uint32_t time;
-    sys_getRTC(4,&time);
-    return time;
-}
-uint32_t getMinute(){
-    uint32_t time;
-    sys_getRTC(2,&time);
-    return time;
+void getTime(timeStruct * time){
+    sys_getRTC(time);
 }
 
 void clearScreen(){

@@ -57,30 +57,37 @@ static void invalidOpCode(){
 }
 
 static void time(){
-    char buffer[3];
+    timeStruct time;
+    char buffer[5];
     print("Fecha y hora actual: ");
-    intToString(getDay(),buffer,10);
+    getTime(&time);
+    intToString(time.dayOfMonth, buffer, 16);
     print(buffer);
     putChar('-');
-    intToString(getMonth(), buffer, 10);
+    intToString(time.month,buffer,16);
+    print(buffer);
+    putChar('-');
+    intToString(time.year, buffer, 16);
     print(buffer);
     putChar(' ');
-    uint32_t h = getHour();
-    h = h<3 ? h+21 : h-3; //convierto a GMT-3
-    if (h<10){
+    if (time.hour <3){
+        time.hour +=21;
+    }
+    else{
+        time.hour -=3;
+    }
+    if (time.hour < 10){
         putChar('0');
     }
-    intToString(h,buffer,16);
+    intToString(time.hour, buffer, 16);
     print(buffer);
     putChar(':');
-    uint32_t m = getMinute();
-    if (m<10){
+    if (time.minute < 16){
         putChar('0');
     }
-    intToString(m,buffer,16);
+    intToString(time.minute, buffer, 16);
     print(buffer);
     putChar('\n');
-	return;
 }
 
 static const char* commands[] = {"help", "time", "dividebyzero", "invalidopcode", "printreg", "pong"}; //Aca van los strings de los nombres de los commandos

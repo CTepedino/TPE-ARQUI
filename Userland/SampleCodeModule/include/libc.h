@@ -7,6 +7,15 @@
 #define STDOUT 1
 #define STDERR 2
 
+typedef struct timeStruct{
+    uint32_t year;
+    uint32_t month;
+    uint32_t dayOfMonth;
+    uint32_t dayOfWeek;
+    uint32_t hour;
+    uint32_t minute;
+    uint32_t second;
+} timeStruct;
 
 void putChar(char c);
 
@@ -20,10 +29,7 @@ void intToStringL(uint64_t num, char *string, uint8_t base, uint32_t intLength);
 void intToString(uint64_t num, char * string, uint8_t base);
 uint32_t uIntLen(uint64_t num, uint8_t base);
 
-uint32_t getDay();
-uint32_t getMonth();
-uint32_t getHour();
-uint32_t getMinute();
+void getTime(timeStruct * time);
 
 
 void fillRegData(uint64_t regData[17]);
