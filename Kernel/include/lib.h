@@ -11,5 +11,5 @@ void intToString(uint64_t n, char * buffer, uint8_t base, uint8_t intLength);
 
 char *cpuVendor(char *result);
 char getTime(int id);
-uint64_t * getREGS();
+uint64_t * getRegistersData();
 #endif

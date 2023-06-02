@@ -16,6 +16,7 @@ char getChar();
 
 void scan(char * buf, uint64_t length);
 
+void intToStringL(uint64_t num, char *string, uint8_t base, uint32_t intLength);
 void intToString(uint64_t num, char * string, uint8_t base);
 uint32_t uIntLen(uint64_t num, uint8_t base);
 

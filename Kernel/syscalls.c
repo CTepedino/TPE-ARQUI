@@ -7,6 +7,7 @@
 
 #define SYSCALL_COUNT 8
 
+extern uint64_t * getREGS();
 
 void read(uint64_t fd, char *buffer, uint64_t length);
 void write(uint64_t fd, const char * string, uint64_t count);
@@ -110,5 +111,8 @@ void writeMatrix(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const c
 
 
 void regdump(uint64_t * buffer){
-    buffer = getREGS();
+    uint64_t * aux = getREGS();
+    for(int i=0; i<18;i++){
+        buffer[i]=aux[i];
+    }
 }
