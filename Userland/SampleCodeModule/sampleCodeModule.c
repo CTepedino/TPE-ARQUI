@@ -21,24 +21,20 @@ static void help(){
 	print(helpstring, strlen(helpstring));
 }
 
-static const char* registerNames[17] = {
-    "RIP", "RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "RBP", "RSP", "R8 ", "R9 ", "R10", "R11", "R12", "R13", "R14", "R15"
-};
+static char * regs[] = {"RAX", "RBX", "RCX", "RDX", "RBP","RSI", "RDI", "R8 ", "R9 ", "R10",
+                        "R11", "R12", "R13", "R14", "R15", "RSP", "RIP", "RFLAGS"};
 
 static void printReg(){
-	/*uint64_t regData[17];
+	uint64_t * regData;
 	getREGS(regData);
-	char buf[18];
+	char buf[16];
 	for (int i = 0; i < 17; i++) {
-		print(registerNames[i], 3);
-		print(": ", 2);
+		print(regs[i], strlen(regs[i]));
+		print(":     ", 6);
 		intToString(regData[i], buf);
-		print(buf, 18);
-		if ((i % 4) == 0)
-			print("\n", 1);
-		else
-			print("   ", 3);
-	}*/
+		print(buf, 16);
+	}
+
 }
 
 static void divideByZero(){

@@ -6,7 +6,7 @@
 #define MAX_HEIGHT 1000
 #define MAX_WIDTH  1000
 
-uint64_t screen[MAX_HEIGHT][MAX_WIDTH] = {0};
+char screen[MAX_HEIGHT][MAX_WIDTH] = {0};
 uint32_t width;
 uint32_t height;
 int ballX, ballY;
@@ -20,13 +20,13 @@ char leftScore = '0';
 
 
 static void drawBoard(){
-    for(int i = 0; i < height; i++){
-        for(int j = 0; j < width; j++){
-            if((j == paddleLeftX && i >= paddleLeftY && i <= paddleLeftY + paddleHeight) || (j == paddleRightX && i >= paddleRightY && i <= paddleRightY + paddleHeight) || (j == ballX && i == ballY))
-                screen[i][j] = WHITE;
-        }
-    }
-    drawScreen(screen);
+    // for(int i = 0; i < height; i++){
+    //     for(int j = 0; j < width; j++){
+    //         if((j == paddleLeftX && i >= paddleLeftY && i <= paddleLeftY + paddleHeight) || (j == paddleRightX && i >= paddleRightY && i <= paddleRightY + paddleHeight) || (j == ballX && i == ballY))
+    //             screen[i][j] = 1;
+    //     }
+    // }
+    drawScreen(0, height, width, height, screen);
 }
 
 static void resetBall(){
@@ -35,9 +35,9 @@ static void resetBall(){
 }
 
 static void updateScore(){
-    textPosition(width/4, height*9/10);
+    textPosition(width/4, height/10);
     putChar(leftScore);
-    textPosition(width*3/4, height*9);
+    textPosition(width*3/4, height/10);
     putChar(rightScore);
 }
 

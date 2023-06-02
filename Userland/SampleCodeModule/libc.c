@@ -87,7 +87,7 @@ void getTime(char * buf){
     p[8] = '\n';
 }
 
-void getREGS(char * buffer){
+void getREGS(uint64_t * buffer){
     sys_regdump(buffer);
 }
 
