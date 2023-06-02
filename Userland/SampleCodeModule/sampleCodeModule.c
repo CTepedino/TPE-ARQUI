@@ -21,21 +21,32 @@ static void help(){
 	print(helpstring);
 }
 
-static char * regs[] = {"RAX", "RBX", "RCX", "RDX", "RBP","RSI", "RDI", "R8 ", "R9 ", "R10",
+static char * regNames[] = {"RAX", "RBX", "RCX", "RDX", "RBP","RSI", "RDI", "R8 ", "R9 ", "R10",
                         "R11", "R12", "R13", "R14", "R15", "RSP", "RIP", "RFLAGS"};
 
-static void printReg(){
-	uint64_t * regData;
-	getREGS(regData);
-	char buf[16];
-	for (int i = 0; i < 18; i++) {
-		print(regs[i]);
-		print(":     ");
-		intToString(regData[i], buf, 16);
-		print(buf);
-		print("\n");
-	}
+
+static void printSingleReg(char * regName, uint64_t reg, char * buffer){
+    uint64_t nameLen = strlen(regName);
+    print(regName);
+    putChar(':');
+    for(int i = 7-nameLen; i>0 ;i--){
+        putChar(' ');
+    }
+    intToStringL(reg, buffer, 16, 16);
+    print(buffer);
+    putChar('\n');
 }
+
+static void printReg(){
+	uint64_t regs[18];
+    char regBuffer[17];
+    getREGS(regs);
+    for(int i=0; i<=17;i++) {
+        printSingleReg(regNames[i], regs[i], regBuffer);
+    }
+}
+
+
 
 static void divideByZero(){
 	runDivideByZero();
@@ -48,10 +59,10 @@ static void invalidOpCode(){
 static void time(){
     char buffer[3];
     print("Fecha y hora actual: ");
-    intToString(getDay(),buffer,16);
+    intToString(getDay(),buffer,10);
     print(buffer);
     putChar('-');
-    intToString(getMonth(), buffer, 16);
+    intToString(getMonth(), buffer, 10);
     print(buffer);
     putChar(' ');
     uint32_t h = getHour();

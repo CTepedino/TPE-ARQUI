@@ -58,7 +58,7 @@ getREGS:
     mov [regs+8*13], r14
     mov [regs+8*14], r15
     mov [regs+8*15], rsp
-    mov rax, rsp
+    mov rax, [rsp]
     mov [regs+8*16], rax ;rip
     pushfq
     pop QWORD [regs+8*17] ;rflags

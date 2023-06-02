@@ -52,15 +52,18 @@ void scan(char * buf, uint64_t length){
     }
 }
 
-void intToString(uint64_t num, char * string, uint8_t base){
-    int aux;
-    int l = uIntLen(num,base);
-    string[l]=0;
-    for(int i=l-1; i>=0;i--){
+void intToStringL(uint64_t num, char *string, uint8_t base, uint32_t intLength){
+    uint64_t aux;
+    string[intLength]=0;
+    for(int i=intLength-1; i>=0;i--){
         aux = num%base;
         string[i] = aux<10? '0'+aux : 'A'+aux-10;
         num/=base;
     }
+}
+
+void intToString(uint64_t num, char * string, uint8_t base){
+    intToStringL(num, string, base, uIntLen(num,base));
 }
 
 uint32_t uIntLen(uint64_t num, uint8_t base){
@@ -71,6 +74,8 @@ uint32_t uIntLen(uint64_t num, uint8_t base){
     }
     return len;
 }
+
+
 
 
 
