@@ -20,13 +20,13 @@ char leftScore = '0';
 
 
 static void drawBoard(){
-    // for(int i = 0; i < height; i++){
-    //     for(int j = 0; j < width; j++){
-    //         if((j == paddleLeftX && i >= paddleLeftY && i <= paddleLeftY + paddleHeight) || (j == paddleRightX && i >= paddleRightY && i <= paddleRightY + paddleHeight) || (j == ballX && i == ballY))
-    //             screen[i][j] = 1;
-    //     }
-    // }
-    drawScreen(0, height, width, height, screen);
+    for(int i = 0; i < height; i++){
+        for(int j = 0; j < width; j++){
+            if((j == paddleLeftX && i >= paddleLeftY && i <= paddleLeftY + paddleHeight) || (j == paddleRightX && i >= paddleRightY && i <= paddleRightY + paddleHeight) || (j == ballX && i == ballY))
+                screen[i][j] = WHITE;
+        }
+    }
+    //drawScreen(screen);
 }
 
 static void resetBall(){

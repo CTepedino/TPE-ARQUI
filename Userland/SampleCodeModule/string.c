@@ -11,8 +11,7 @@ int strcmp(const char* str1, const char* str2) {
 
 uint64_t strlen(const char* s) {
     int l = 0;
-    while (*s != 0){
-        s++;
+    while (s[l]!= 0){
         l++;
     }
     return l;

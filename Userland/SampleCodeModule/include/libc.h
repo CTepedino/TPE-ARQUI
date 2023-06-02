@@ -7,17 +7,23 @@
 #define STDOUT 1
 #define STDERR 2
 
+
 void putChar(char c);
 
-void print(const char* buf, uint64_t count);
+void print(const char* string);
 
 char getChar();
 
 void scan(char * buf, uint64_t length);
 
-void intToString(uint64_t num, char * string);
+void intToString(uint64_t num, char * string, uint8_t base);
+uint32_t uIntLen(uint64_t num, uint8_t base);
 
-void getTime(char * buf);
+uint32_t getDay();
+uint32_t getMonth();
+uint32_t getHour();
+uint32_t getMinute();
+
 
 void fillRegData(uint64_t regData[17]);
 

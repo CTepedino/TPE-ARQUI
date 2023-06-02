@@ -18,7 +18,7 @@ const char* helpstring =
 "PONG                 Abre el juego Pong. El paddle izquierdo se controla con \'W\' y \'S\'.El derecho con \'I\' y \'K\'.\n\n";
 
 static void help(){
-	print(helpstring, strlen(helpstring));
+	print(helpstring);
 }
 
 static char * regs[] = {"RAX", "RBX", "RCX", "RDX", "RBP","RSI", "RDI", "R8 ", "R9 ", "R10",
@@ -28,13 +28,13 @@ static void printReg(){
 	uint64_t * regData;
 	getREGS(regData);
 	char buf[16];
-	for (int i = 0; i < 17; i++) {
-		print(regs[i], strlen(regs[i]));
-		print(":     ", 6);
-		intToString(regData[i], buf);
-		print(buf, 16);
+	for (int i = 0; i < 18; i++) {
+		print(regs[i]);
+		print(":     ");
+		intToString(regData[i], buf, 16);
+		print(buf);
+		print("\n");
 	}
-
 }
 
 static void divideByZero(){
@@ -46,9 +46,29 @@ static void invalidOpCode(){
 }
 
 static void time(){
-	char time[TIME_LENGTH + 1];
-	getTime(time);
-	print(time,TIME_LENGTH);
+    char buffer[3];
+    print("Fecha y hora actual: ");
+    intToString(getDay(),buffer,16);
+    print(buffer);
+    putChar('-');
+    intToString(getMonth(), buffer, 16);
+    print(buffer);
+    putChar(' ');
+    uint32_t h = getHour();
+    h = h<3 ? h+21 : h-3; //convierto a GMT-3
+    if (h<10){
+        putChar('0');
+    }
+    intToString(h,buffer,16);
+    print(buffer);
+    putChar(':');
+    uint32_t m = getMinute();
+    if (m<10){
+        putChar('0');
+    }
+    intToString(m,buffer,16);
+    print(buffer);
+    putChar('\n');
 	return;
 }
 
@@ -73,12 +93,12 @@ static unsigned int scr_height;
 int main() {
     screenInfo(&scr_width, &scr_height);
     textPosition(0, scr_height);
-    print("Bienvenido!\n\nQue modulo desea correr?\n\n", 39);
+    print("Bienvenido!\n\nQue modulo desea correr?\n\n");
 	help();
-	print("Para correr los modulos, ingrese el comando correspondiente y presione enter.\n\n", 79);
+	print("Para correr los modulos, ingrese el comando correspondiente y presione enter.\n\n");
 
 	while(1) {
-		print("$ ", 2);
+		print("$ ");
 		char command[READBUF_LENGTH] = {0};
 		scan(command,READBUF_LENGTH);
 
@@ -87,8 +107,8 @@ int main() {
 			commands_functions[index]();
 		}
 		else {
-			print(command, strlen(command));
-			print(": command not found\n", 20);
+			print(command);
+			print(": command not found\n");
 		}
 	}
 	return 0;
