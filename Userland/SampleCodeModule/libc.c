@@ -91,6 +91,7 @@ void getREGS(char * buffer){
     sys_regdump(buffer);
 }
 
-void drawScreen(uint64_t ** matrix){
-    sys_writeMatrix(matrix);
+
+void drawScreen(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const char matrix[height][width]){
+    sys_writeMatrix(x,y,width,height,matrix);
 }
