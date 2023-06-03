@@ -2,9 +2,7 @@
 #include <stdint.h>
 #include <libc.h>
 
-#define PADDLE_HEIGHT 50
-#define PADDLE_WIDTH 10
-#define BALL_RADIUS 5
+#define PADDLE_SPEED 5
 
 
 uint32_t width;
@@ -12,16 +10,18 @@ uint32_t height;
 int ballX, ballY; //Centro de la pelota
 int ballSpeedX = 1; 
 int ballSpeedY = 1;
+int ballRadius;
 int paddleLeftX, paddleLeftY, paddleRightX, paddleRightY; //Punto inferior izquierdo del rectangulo
 char rightScore = '0';
 char leftScore = '0';
+int paddleHeight, paddleWidth;
 
 
 
 static void drawBoard(){
-    drawRectangle(paddleLeftX, paddleLeftY, PADDLE_WIDTH, PADDLE_HEIGHT);
-    drawRectangle(paddleRightX, paddleRightY, PADDLE_WIDTH, PADDLE_HEIGHT);
-    drawCircle(ballX, ballY, BALL_RADIUS);
+    drawRectangle(paddleLeftX, paddleLeftY, paddleWidth, paddleHeight);
+    drawRectangle(paddleRightX, paddleRightY, paddleWidth, paddleHeight);
+    drawCircle(ballX, ballY, ballRadius);
 }
 
 static void resetBall(){
@@ -37,43 +37,53 @@ static void updateScore(){
 }
 
 static void updateBall(){
+    clearCircle(ballX, ballY, ballRadius);
     ballX += ballSpeedX;
     ballY += ballSpeedY;
-    if (ballX == 0){ //Right side scores
+    if (ballX <= 0){ //Right side scores
         rightScore += 1;
         updateScore();
         resetBall();
-        //playSound();
+        playSound();
     }
-    if (ballY == width){ //Left side scores
+    if (ballX >= width){ //Left side scores
         leftScore += 1;
         updateScore();
         resetBall();
-        //playSound();
+        playSound();
     }
-    if (ballX - BALL_RADIUS == paddleLeftX + PADDLE_WIDTH && ballY >= paddleLeftY && ballY <= paddleLeftY + PADDLE_HEIGHT){ //Hit left paddle
-        ballSpeedX = 1;
+    if (ballX - ballRadius == paddleLeftX + paddleWidth && ballY >= paddleLeftY && ballY <= paddleLeftY + paddleHeight){ //Hit left paddle
+        ballSpeedX = ballSpeedX;
     }
-    if (ballX + BALL_RADIUS == paddleRightX && ballY >= paddleRightY && ballY <= paddleRightY + PADDLE_HEIGHT){ //Hit right paddle
-        ballSpeedX = -1;
+    if (ballX + ballRadius == paddleRightX && ballY >= paddleRightY && ballY <= paddleRightY + paddleHeight){ //Hit right paddle
+        ballSpeedX = -ballSpeedX;
     }
-    if (ballY == 0 || ballY == height){ //Hit top or bottom of screen
+    if (ballY <= 0 || ballY >= height){ //Hit top or bottom of screen
         ballSpeedY = -ballSpeedY;
     }
+    drawCircle(ballX, ballY, ballRadius);
 }
 
 static void movePaddle(char key){
     if (key == 'w'){
-        paddleLeftY += 1;
+        clearRectangle(paddleLeftX, paddleLeftY, paddleWidth, paddleHeight);
+        paddleLeftY -= PADDLE_SPEED;
+        drawRectangle(paddleLeftX, paddleLeftY, paddleWidth, paddleHeight);
     }
     if (key == 's'){
-        paddleLeftY -= 1;
+        clearRectangle(paddleLeftX, paddleLeftY, paddleWidth, paddleHeight);
+        paddleLeftY += PADDLE_SPEED;
+        drawRectangle(paddleLeftX, paddleLeftY, paddleWidth, paddleHeight);
     }
     if(key == 'i'){
-        paddleRightY += 1;
+        clearRectangle(paddleRightX, paddleRightY, paddleWidth, paddleHeight);
+        paddleRightY -= PADDLE_SPEED;
+        drawRectangle(paddleRightX, paddleRightY, paddleWidth, paddleHeight);
     }
     if(key == 'k'){
-        paddleRightY -= 1;
+        clearRectangle(paddleRightX, paddleRightY, paddleWidth, paddleHeight);
+        paddleRightY += PADDLE_SPEED;
+        drawRectangle(paddleRightX, paddleRightY, paddleWidth, paddleHeight);
     }
 }
 
@@ -83,14 +93,17 @@ void pong(){
     screenInfo(&width, &height);
     resetBall();
     updateScore();
-    paddleLeftX = width/8;
-    paddleRightX = width*7/8;
+    paddleLeftX = width/10;
+    paddleRightX = width*9/10;
     paddleLeftY = height/2;
     paddleRightY = height/2; 
+    paddleHeight = height/8;
+    paddleWidth = width/100;
+    ballRadius = width/200;
     char key;
+    drawBoard();
 
     while (1){
-        drawBoard();
         updateBall();
         key = getChar();
         movePaddle(key);

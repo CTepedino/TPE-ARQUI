@@ -16,6 +16,9 @@ void textPosition(uint32_t x, uint32_t y);
 void screenInfo(uint32_t * width, uint32_t * height);
 void getRTC(timeStruct * time);
 void regdump(uint64_t * buffer);
+void clearScreen();
+void putRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t base, uint32_t height);
+void putCircle(uint32_t hexColor, uint32_t x, uint32_t y, int32_t r);
 
 void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t rax){
     switch(rax){
@@ -42,6 +45,15 @@ void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
             return;
         case 7:
             beepSound();
+            return;
+        case 8:
+            clearScreen();
+            return;
+        case 9:
+            putRectangle(rdi, rsi, rdx, rcx, r8);
+            return;
+        case 10:
+            putCircle(rdi, rsi, rdx, rcx);
             return;
     }
 }
@@ -119,4 +131,46 @@ void regdump(uint64_t * buffer){
     for(int i=0; i<18;i++){
         buffer[i]=aux[i];
     }
+}
+
+
+void clearScreen(){
+    uint32_t w = getWidth();
+    uint32_t h = getHeight();
+    for(uint32_t i=0; i < w;i++){
+        for(uint32_t j=0;j < h;j++){
+            putPixel(0, i,j);
+        }
+    }
+}
+
+void putRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t base, uint32_t height){
+    uint32_t w = getWidth();
+    uint32_t h = getHeight();
+    if (x + base > w){
+        base = w - x;
+    }
+    if (y + height > h){
+        height = h - y;
+    }
+    for(int dx=0;dx<base;dx++){
+        for(int dy=0;dy<height;dy++){
+            putPixel(hexColor,dx+x,dy+y);
+        }
+    }
+}
+
+//de https://github.com/mlombardia/arqui_tpe
+void putCircle(uint32_t hexColor, uint32_t center_x, uint32_t center_y, int32_t r){
+    int x, y;
+    for (int i = -r; i <= r; i++) {
+        for (int j = -r; j <= r; j++) {
+            x = j;
+            y = i;
+            if ((x*x) + (y*y) < (r*r)) {
+                putPixel(hexColor, center_x + x, center_y + y);
+            }
+        }
+    }
+    return;
 }

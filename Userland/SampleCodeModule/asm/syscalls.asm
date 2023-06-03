@@ -39,14 +39,14 @@ sys_getRTC:
 sys_regdump:
     systemcall 6
 
-sys_clear:
+sys_playSound:
     systemcall 7
 
-sys_putRectangle:
+sys_clear:
     systemcall 8
 
-sys_putCircle:
+sys_putRectangle:
     systemcall 9
 
-sys_playSound:
-    ret ;TODO
+sys_putCircle:
+    systemcall 10

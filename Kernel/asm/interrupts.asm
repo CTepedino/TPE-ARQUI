@@ -158,7 +158,6 @@ _exception6Handler:
 
 ;System Calls
 _syscallHandler:
-    mov rcx, r10
     push rax
     call syscallDispatcher
     add rsp, 8

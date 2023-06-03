@@ -3,6 +3,9 @@
 #include <syscalls.h>
 #include <string.h>
 
+#define WHITE 0xFFFFFF
+#define BLACK 0
+
 void putChar(char c){
     sys_write(STDOUT, &c, 1);
 }
@@ -92,14 +95,26 @@ void getTime(timeStruct * time){
     sys_getRTC(time);
 }
 
+void playSound(){
+    sys_playSound();
+}
+
 void clearScreen(){
     sys_clear();
 }
 
 void drawRectangle(uint32_t x, uint32_t y, uint32_t base, uint32_t height){
-    sys_putRectangle(x,y,base,height);
+    sys_putRectangle(WHITE,x,y,base,height);
 }
 
-void drawCircle(uint32_t x, uint32_t y, uint32_t radius){
-    sys_putCircle(x,y,radius);
+void drawCircle(uint32_t x, uint32_t y, int32_t radius){
+    sys_putCircle(WHITE,x,y,radius);
+}
+
+void clearRectangle(uint32_t x, uint32_t y, uint32_t base, uint32_t height){
+    sys_putRectangle(BLACK,x,y,base,height);
+}
+
+void clearCircle(uint32_t x, uint32_t y, int32_t radius){
+    sys_putCircle(BLACK,x,y,radius);
 }
