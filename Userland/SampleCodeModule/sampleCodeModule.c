@@ -61,31 +61,26 @@ static void time(){
     char buffer[5];
     print("Fecha y hora actual: ");
     getTime(&time);
-    intToString(time.dayOfMonth, buffer, 16);
+    intToString(time.dayOfMonth, buffer, 10);
     print(buffer);
     putChar('-');
-    intToString(time.month,buffer,16);
+    intToString(time.month,buffer,10);
     print(buffer);
     putChar('-');
-    intToString(time.year, buffer, 16);
+    intToString(time.year, buffer, 10);
     print(buffer);
     putChar(' ');
-    if (time.hour <3){
-        time.hour +=21;
-    }
-    else{
-        time.hour -=3;
-    }
-    if (time.hour < 10){
+    time.hour = (time.hour + 21)%24;
+   /* if (time.hour < 10){
         putChar('0');
-    }
-    intToString(time.hour, buffer, 16);
+    }*/
+    intToStringL(time.hour, buffer, 10, 2);
     print(buffer);
     putChar(':');
-    if (time.minute < 16){
+   /* if (time.minute < 16){
         putChar('0');
-    }
-    intToString(time.minute, buffer, 16);
+    }*/
+    intToStringL(time.minute, buffer, 10, 2);
     print(buffer);
     putChar('\n');
 }
