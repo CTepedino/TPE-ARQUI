@@ -118,3 +118,7 @@ void clearRectangle(uint32_t x, uint32_t y, uint32_t base, uint32_t height){
 void clearCircle(uint32_t x, uint32_t y, int32_t radius){
     sys_putCircle(BLACK,x,y,radius);
 }
+
+void beep(uint8_t frequency, uint64_t ticks){
+    sys_beep(frequency, ticks);
+}

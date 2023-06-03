@@ -54,4 +54,6 @@ void clearRectangle(uint32_t x, uint32_t y, uint32_t base, uint32_t height);
 
 void clearCircle(uint32_t x, uint32_t y, int32_t radius);
 
+
+void beep(uint8_t frequency, uint64_t ticks);
 #endif
