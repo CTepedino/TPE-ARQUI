@@ -73,7 +73,7 @@ void putChar(uint32_t hexColorChar, uint32_t hexColorBG, char c){
     else if (c == '\n'){
         putNewLine();
     }
-    else {
+    else if (c != ESC){
         if (tp.x + CHAR_WIDTH > VBE_mode_info->width) {
             tp.x = 0;
             tp.y += CHAR_HEIGHT;

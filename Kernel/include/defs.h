@@ -25,4 +25,6 @@
 #define STDOUT 1
 #define STDERR 2
 
+#define ESC 27
+
 #endif

@@ -2,7 +2,7 @@
 #define KEYBOARDDRIVER_H
 
 #include <stdint.h>
-
+#include <defs.h>
 void keyboard_handler();
 char getKey();
 void cleanBuffer();

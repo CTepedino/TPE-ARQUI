@@ -1,5 +1,5 @@
 #include <pong.h>
-
+#define ESC 27
 #define PADDLE_WIDTH 10
 #define PADDLE_HEIGHT 60
 #define PADDLE_SPEED 5
@@ -54,7 +54,9 @@ void pong(){
     rightPaddle.x = width*9/10;
     rightPaddle.y=height/2-PADDLE_HEIGHT/2;
 
-   /* l_u = 0;
+   /* scoreL =0;
+    * scoreR = 0
+    * l_u = 0;
     l_d = 0;
     r_u = 0;
     r_d = 0;*/
@@ -65,7 +67,6 @@ void pong(){
 
     int running = 1;
     while(running){
-
         sleep(1);//para que el juego no vaya a velocidades absurdas
 
         //TODO: Poder salir con ESC
@@ -73,6 +74,8 @@ void pong(){
         getCurrentKeyPress(keys);
         for(int i = 0; keys[i]; i++){
             switch (keys[i]){
+                case ESC:
+                    running = 0;
                 case 'w':
                     l_u = 1;
                     break;
@@ -112,6 +115,7 @@ void pong(){
         drawCircle(ball.x+BALL_SIZE/2, ball.y+BALL_SIZE/2, BALL_SIZE/2);
         //draw();
     }
+    clearScreen();
 }
 
 static void movePaddles(){
@@ -174,7 +178,12 @@ static void checkCollisions(){
 
 
 static void checkGoal(){
-
+    if (ball.x <= leftPaddle.x + PADDLE_WIDTH){
+        scoreR++;
+    }
+    if (ball.y <= rightPaddle.x - PADDLE_WIDTH){
+        scoreL++;
+    }
 }
 
 static void draw(){
