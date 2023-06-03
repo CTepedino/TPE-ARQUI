@@ -44,13 +44,13 @@ static void updateBall(){
         rightScore += 1;
         updateScore();
         resetBall();
-        playSound();
+        //playSound();
     }
     if (ballX >= width){ //Left side scores
         leftScore += 1;
         updateScore();
         resetBall();
-        playSound();
+        //playSound();
     }
     if (ballX - ballRadius == paddleLeftX + paddleWidth && ballY >= paddleLeftY && ballY <= paddleLeftY + paddleHeight){ //Hit left paddle
         ballSpeedX = ballSpeedX;
