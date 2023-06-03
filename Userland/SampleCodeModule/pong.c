@@ -1,111 +1,188 @@
 #include <pong.h>
-#include <stdint.h>
-#include <libc.h>
 
+#define PADDLE_WIDTH 10
+#define PADDLE_HEIGHT 60
 #define PADDLE_SPEED 5
+#define BALL_SIZE 10
+
+struct paddle{
+    int x;
+    int y;
+};
+
+struct ball{ //internamente la pelota es un cuadrado, aunque la dibujemos como un circulo
+    int  x;
+    int  y;
+    int speed_x;
+    int speed_y;
+};
 
 
-uint32_t width;
-uint32_t height;
-int ballX, ballY; //Centro de la pelota
-int ballSpeedX = 1; 
-int ballSpeedY = 1;
-int ballRadius;
-int paddleLeftX, paddleLeftY, paddleRightX, paddleRightY; //Punto inferior izquierdo del rectangulo
-char rightScore = '0';
-char leftScore = '0';
-int paddleHeight, paddleWidth;
+static char keys[11];
+static char rkeys[11];
+static int l_u=0;
+static int l_d=0;
+static int r_u=0;
+static int r_d=0;
 
+static uint32_t width;
+static uint32_t height;
 
+static int scoreL = 0;
+static int scoreR = 0;
 
-static void drawBoard(){
-    drawRectangle(paddleLeftX, paddleLeftY, paddleWidth, paddleHeight);
-    drawRectangle(paddleRightX, paddleRightY, paddleWidth, paddleHeight);
-    drawCircle(ballX, ballY, ballRadius);
-}
+static struct paddle leftPaddle;
+static struct paddle rightPaddle;
+static struct ball ball;
 
-static void resetBall(){
-    ballX = width/2;
-    ballY = height/2;
-}
-
-static void updateScore(){
-    textPosition(width/4, height/10);
-    putChar(leftScore);
-    textPosition(width*3/4, height/10);
-    putChar(rightScore);
-}
-
-static void updateBall(){
-    clearCircle(ballX, ballY, ballRadius);
-    ballX += ballSpeedX;
-    ballY += ballSpeedY;
-    if (ballX <= 0){ //Right side scores
-        rightScore += 1;
-        updateScore();
-        resetBall();
-        //playSound();
-    }
-    if (ballX >= width){ //Left side scores
-        leftScore += 1;
-        updateScore();
-        resetBall();
-        //playSound();
-    }
-    if (ballX - ballRadius == paddleLeftX + paddleWidth && ballY >= paddleLeftY && ballY <= paddleLeftY + paddleHeight){ //Hit left paddle
-        ballSpeedX = ballSpeedX;
-    }
-    if (ballX + ballRadius == paddleRightX && ballY >= paddleRightY && ballY <= paddleRightY + paddleHeight){ //Hit right paddle
-        ballSpeedX = -ballSpeedX;
-    }
-    if (ballY <= 0 || ballY >= height){ //Hit top or bottom of screen
-        ballSpeedY = -ballSpeedY;
-    }
-    drawCircle(ballX, ballY, ballRadius);
-}
-
-static void movePaddle(char key){
-    if (key == 'w'){
-        clearRectangle(paddleLeftX, paddleLeftY, paddleWidth, paddleHeight);
-        paddleLeftY -= PADDLE_SPEED;
-        drawRectangle(paddleLeftX, paddleLeftY, paddleWidth, paddleHeight);
-    }
-    if (key == 's'){
-        clearRectangle(paddleLeftX, paddleLeftY, paddleWidth, paddleHeight);
-        paddleLeftY += PADDLE_SPEED;
-        drawRectangle(paddleLeftX, paddleLeftY, paddleWidth, paddleHeight);
-    }
-    if(key == 'i'){
-        clearRectangle(paddleRightX, paddleRightY, paddleWidth, paddleHeight);
-        paddleRightY -= PADDLE_SPEED;
-        drawRectangle(paddleRightX, paddleRightY, paddleWidth, paddleHeight);
-    }
-    if(key == 'k'){
-        clearRectangle(paddleRightX, paddleRightY, paddleWidth, paddleHeight);
-        paddleRightY += PADDLE_SPEED;
-        drawRectangle(paddleRightX, paddleRightY, paddleWidth, paddleHeight);
-    }
-}
-
+static void draw();
+static void movePaddles();
+static void moveBall();
+static void checkCollisions();
+static void checkGoal();
 
 void pong(){
-    clearScreen();
-    screenInfo(&width, &height);
-    resetBall();
-    updateScore();
-    paddleLeftX = width/10;
-    paddleRightX = width*9/10;
-    paddleLeftY = height/2;
-    paddleRightY = height/2; 
-    paddleHeight = height/8;
-    paddleWidth = width/100;
-    ballRadius = width/200;
-    char key;
-    drawBoard();
+    screenInfo(&width,&height);
+    ball.y =height/2-BALL_SIZE/2;
+    ball.x=width/2-BALL_SIZE/2;
+    ball.speed_x=3;
+    ball.speed_y=3;
 
-    while (1){
-        updateBall();
-        key = getChar();
-        movePaddle(key);
-    }    
+    leftPaddle.x = width/10;
+    leftPaddle.y = height/2-PADDLE_HEIGHT/2;
+
+    rightPaddle.x = width*9/10;
+    rightPaddle.y=height/2-PADDLE_HEIGHT/2;
+
+   /* l_u = 0;
+    l_d = 0;
+    r_u = 0;
+    r_d = 0;*/
+    //todavia no probe si hace falta, es para el caso de cerrar el juego y volverlo a abrir\
+
+    clearScreen();
+    draw();
+
+    int running = 1;
+    while(running){
+
+        sleep(1);//para que el juego no vaya a velocidades absurdas
+
+        //TODO: Poder salir con ESC
+
+        getCurrentKeyPress(keys);
+        for(int i = 0; keys[i]; i++){
+            switch (keys[i]){
+                case 'w':
+                    l_u = 1;
+                    break;
+                case 's':
+                    l_d =1;
+                    break;
+                case 'i':
+                    r_u = 1;
+                    break;
+                case 'k':
+                    r_d = 1;
+                    break;
+            }
+        }
+        getCurrentReleasedKeys(rkeys);
+        for(int i = 0; rkeys[i]; i++){
+            switch (rkeys[i]){
+                case 'w':
+                    l_u = 0;
+                    break;
+                case 's':
+                    l_d =0;
+                    break;
+                case 'i':
+                    r_u = 0;
+                    break;
+                case 'k':
+                    r_d = 0;
+                    break;
+            }
+        }
+        clearCircle(ball.x+BALL_SIZE/2, ball.y+BALL_SIZE/2, BALL_SIZE/2);
+        movePaddles();
+        moveBall();
+        checkCollisions();
+        checkGoal();
+        drawCircle(ball.x+BALL_SIZE/2, ball.y+BALL_SIZE/2, BALL_SIZE/2);
+        //draw();
+    }
+}
+
+static void movePaddles(){ //TODO: no dejar que se salgan de la pantalla
+    if (l_d){
+        clearRectangle(leftPaddle.x, leftPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
+
+        leftPaddle.y += PADDLE_SPEED;
+        if (leftPaddle.y + PADDLE_HEIGHT > height){
+            leftPaddle.y = height - PADDLE_HEIGHT;
+        }
+
+        drawRectangle(leftPaddle.x, leftPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
+
+    }
+    if (l_u){
+        clearRectangle(leftPaddle.x, leftPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
+        leftPaddle.y -= PADDLE_SPEED;
+        if (leftPaddle.y < 0){
+            leftPaddle.y = 0;
+        }
+        drawRectangle(leftPaddle.x, leftPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
+
+    }
+    if (r_d){
+        clearRectangle(rightPaddle.x, rightPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
+        rightPaddle.y += PADDLE_SPEED;
+        if (rightPaddle.y + PADDLE_HEIGHT > height){
+            rightPaddle.y = height - PADDLE_HEIGHT;
+        }
+        drawRectangle(rightPaddle.x, rightPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
+
+    }
+    if (r_u){
+        clearRectangle(rightPaddle.x, rightPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
+        rightPaddle.y -= PADDLE_SPEED;
+        if (rightPaddle.y < 0){
+            rightPaddle.y = 0;
+        }
+        drawRectangle(rightPaddle.x, rightPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
+    }
+}
+
+static void moveBall(){
+    ball.x += ball.speed_x;
+    ball.y += ball.speed_y;
+}
+
+
+static void checkCollisions(){
+    if (ball.y <= 0 || ball.y + BALL_SIZE >= height){
+        ball.speed_y = -ball.speed_y;
+    }
+    if (ball.x <= leftPaddle.x + PADDLE_WIDTH && ball.y >= leftPaddle.y && ball.y <= leftPaddle.y+PADDLE_HEIGHT){
+        ball.speed_x = -ball.speed_x;
+    }
+    //TODO: no choca contra esta
+    if (ball.x >= rightPaddle.x && ball.y >= leftPaddle.y && ball.y <= leftPaddle.y+PADDLE_HEIGHT){
+        ball.speed_x = -ball.speed_x;
+    }
+
+}
+
+
+static void checkGoal(){
+
+}
+
+static void draw(){
+    clearScreen(); //TODO: escribir mejor esta funcion, asi es lentisima xd
+    clearRectangle(leftPaddle.x, 0, PADDLE_WIDTH, height);
+    drawRectangle(leftPaddle.x, leftPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
+    drawRectangle(rightPaddle.x, rightPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
+    drawCircle(ball.x+BALL_SIZE/2, ball.y+BALL_SIZE/2, BALL_SIZE/2);
 }

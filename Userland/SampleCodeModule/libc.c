@@ -114,3 +114,15 @@ void clearCircle(uint32_t x, uint32_t y, int32_t radius){
 void beep(uint8_t frequency, uint64_t ticks){
     sys_beep(frequency, ticks);
 }
+
+void getCurrentKeyPress(char * keys){
+    sys_getCurrentKeyPress(keys);
+}
+
+void getCurrentReleasedKeys(char * rkeys){
+    sys_getCurrentReleasedKeys(rkeys);
+}
+
+void sleep(uint64_t ticks){
+    sys_sleep(ticks);
+}

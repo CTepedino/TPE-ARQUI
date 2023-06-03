@@ -52,10 +52,10 @@ void * getSampleCodeModuleAddress(){
 void writeMatrix(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const char matrix[height][width]);
 
 int main(){
+
     load_idt();
     setTimeFormat();
 
-    beep(0xA000, 50);
     ((EntryPoint) sampleCodeModuleAddress)();
     return 0;
 }

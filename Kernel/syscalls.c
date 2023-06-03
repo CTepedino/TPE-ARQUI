@@ -19,6 +19,8 @@ void regdump(uint64_t * buffer);
 void clearScreen();
 void putRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t base, uint32_t height);
 void putCircle(uint32_t hexColor, uint32_t x, uint32_t y, int32_t r);
+void getCurrentKeyPress(char * keys);
+void getCurrentReleasedKeys(char * rkeys);
 
 void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t rax){
     switch(rax){
@@ -56,6 +58,17 @@ void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
             return;
         case 10:
             putCircle(rdi, rsi, rdx, rcx);
+            return;
+        case 11:
+            getCurrentKeyPress((char *)rdi);
+            return;
+        case 12:
+            getCurrentReleasedKeys((char *) rdi);
+            return;
+        case 13:
+            _sti();
+            sleep(rdi);
+            _cli();
             return;
     }
 }
@@ -175,4 +188,12 @@ void putCircle(uint32_t hexColor, uint32_t center_x, uint32_t center_y, int32_t 
         }
     }
     return;
+}
+
+void getCurrentKeyPress(char * keys){
+    getAllKeys(keys);
+}
+
+void getCurrentReleasedKeys(char * rkeys){
+    getReleasedKeys(rkeys);
 }

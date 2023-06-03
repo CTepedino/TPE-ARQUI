@@ -1,28 +1,83 @@
 #include <keyboardDriver.h>
 
-#define KEYMAP_LEN 85
-static char keyboard_map[] = {
-    0, 0, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', '\t',
-    'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', 0, 'a', 's',
-    'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '`', 0, '\\', 'z', 'x', 'c', 'v', 'b',
-    'n', 'm', ',', '.', '/', 0, '*', 0, ' ', 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, '7', '8', '9', '-', '4', '5', '6', '+', '1','2','3','0','.','\n'
-};
-static int keyPressed = 0;
-static char buffer;
+#define BUFFER_LEN 10
+#define KEYMAP_LEN 59
 
-void keyboard_handler() {
-    keyPressed=1;
-    buffer = readKey();
+static char keyboard_map[] = {
+        '\0', '\0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', '\t',
+        'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', '\0', 'a', 's',
+        'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '`', '\0', '\\', 'z', 'x', 'c', 'v',
+        'b', 'n', 'm', ',', '.', '/', '\0', '*', '\0', ' ', '\0'
+};
+
+static char buffer[BUFFER_LEN];
+static int first=0;
+static int last=0;
+static int keyPressed = 0;
+
+static char releaseBuffer[BUFFER_LEN];
+static char r_last = 0;
+
+int isScancode(uint8_t code){
+    return (code & 0x80) == 0;
 }
 
-char getKey() {
+void keyboard_handler(){
+    uint64_t code = readKey();
+    if (isScancode(code)){
+        code = code < KEYMAP_LEN ? keyboard_map[code] : 0;
+        if (code) {
+            if (last > BUFFER_LEN){
+                cleanBuffer();
+            }
+            buffer[last++] = code;
+            keyPressed = 1;
+        }
+    }
+    else{
+        //es un breakcode
+        code = code & 0x7F;
+        code = code < KEYMAP_LEN ? keyboard_map[code] : 0;
+        if (code) {
+            if (r_last > BUFFER_LEN){
+                r_last=0;
+            }
+            releaseBuffer[r_last++] = code;
+        }
+    }
+
+}
+
+char getKey(){
     if (keyPressed==0){
         return 0;
     }
-    keyPressed=0;
-    return buffer<KEYMAP_LEN ? keyboard_map[buffer] : 0;
+    char toReturn = buffer[first++];
+    if (first == last){
+        cleanBuffer();
+    }
+    return toReturn;
 }
 
+void getAllKeys(char * c){
+    int usedSpace = last - first;
+    for(int i = 0; i < usedSpace; i++){
+        c[i] = buffer[first+i];
+    }
+    c[usedSpace]=0;
+    cleanBuffer();
+}
 
+void cleanBuffer(){
+    first = 0;
+    last = 0;
+    keyPressed = 0;
+}
+
+void getReleasedKeys(char * c){
+    for(int i = 0; i < r_last; i++){
+        c[i] = releaseBuffer[i];
+    }
+    c[r_last]=0;
+    r_last = 0;
+}

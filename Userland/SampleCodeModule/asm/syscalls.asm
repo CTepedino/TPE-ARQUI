@@ -9,7 +9,9 @@ GLOBAL sys_beep
 GLOBAL sys_putRectangle
 GLOBAL sys_putCircle
 GLOBAL sys_clear
-
+GLOBAL sys_getCurrentKeyPress
+GLOBAL sys_getCurrentReleasedKeys
+GLOBAL sys_sleep
 section .text
 
 %macro systemcall 1
@@ -50,3 +52,12 @@ sys_putRectangle:
 
 sys_putCircle:
     systemcall 10
+
+sys_getCurrentKeyPress:
+    systemcall 11
+
+sys_getCurrentReleasedKeys:
+    systemcall 12
+
+sys_sleep:
+    systemcall 13
