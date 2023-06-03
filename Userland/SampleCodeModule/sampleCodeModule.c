@@ -71,15 +71,9 @@ static void time(){
     print(buffer);
     putChar(' ');
     time.hour = (time.hour + 21)%24;
-   /* if (time.hour < 10){
-        putChar('0');
-    }*/
     intToStringL(time.hour, buffer, 10, 2);
     print(buffer);
     putChar(':');
-   /* if (time.minute < 16){
-        putChar('0');
-    }*/
     intToStringL(time.minute, buffer, 10, 2);
     print(buffer);
     putChar('\n');

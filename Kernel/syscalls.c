@@ -41,7 +41,7 @@ void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
             regdump((uint64_t *)rdi);
             return;
         case 7:
-            //playSound(); ?
+            beepSound();
             return;
     }
 }
