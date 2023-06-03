@@ -5,7 +5,7 @@ GLOBAL sys_screenInfo
 GLOBAL sys_textPosition
 GLOBAL sys_getRTC
 GLOBAL sys_regdump
-GLOBAL sys_playSound
+GLOBAL sys_beep
 GLOBAL sys_putRectangle
 GLOBAL sys_putCircle
 GLOBAL sys_clear
@@ -39,14 +39,15 @@ sys_getRTC:
 sys_regdump:
     systemcall 6
 
-sys_clear:
+sys_beep:
     systemcall 7
 
-sys_putRectangle:
+sys_clear:
     systemcall 8
 
-sys_putCircle:
+sys_putRectangle:
     systemcall 9
 
-sys_playSound:
-    ret ;TODO
+sys_putCircle:
+    systemcall 10
+
