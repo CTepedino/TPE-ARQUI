@@ -78,10 +78,6 @@ uint32_t uIntLen(uint64_t num, uint8_t base){
     return len;
 }
 
-
-
-
-
 void getREGS(uint64_t * buffer){
     sys_regdump(buffer);
 }
@@ -93,10 +89,6 @@ void drawScreen(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const ch
 
 void getTime(timeStruct * time){
     sys_getRTC(time);
-}
-
-void playSound(){
-    sys_playSound();
 }
 
 void clearScreen(){
