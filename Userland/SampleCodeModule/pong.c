@@ -114,7 +114,7 @@ void pong(){
     }
 }
 
-static void movePaddles(){ //TODO: no dejar que se salgan de la pantalla
+static void movePaddles(){
     if (l_d){
         clearRectangle(leftPaddle.x, leftPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
 
@@ -167,11 +167,9 @@ static void checkCollisions(){
     if (ball.x <= leftPaddle.x + PADDLE_WIDTH && ball.y >= leftPaddle.y && ball.y <= leftPaddle.y+PADDLE_HEIGHT){
         ball.speed_x = -ball.speed_x;
     }
-    //TODO: no choca contra esta
-    if (ball.x >= rightPaddle.x && ball.y >= leftPaddle.y && ball.y <= leftPaddle.y+PADDLE_HEIGHT){
+    if (ball.x >= rightPaddle.x - PADDLE_WIDTH && ball.y >= rightPaddle.y && ball.y <= rightPaddle.y+PADDLE_HEIGHT){
         ball.speed_x = -ball.speed_x;
     }
-
 }
 
 
