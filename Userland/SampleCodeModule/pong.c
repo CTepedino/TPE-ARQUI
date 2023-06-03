@@ -40,30 +40,18 @@ static void movePaddles();
 static void moveBall();
 static void checkCollisions();
 static void checkGoal();
+static void setStart();
 
 void pong(){
     screenInfo(&width,&height);
-    ball.y =height/2-BALL_SIZE/2;
-    ball.x=width/2-BALL_SIZE/2;
-    ball.speed_x=3;
-    ball.speed_y=3;
 
-    leftPaddle.x = width/10;
-    leftPaddle.y = height/2-PADDLE_HEIGHT/2;
-
-    rightPaddle.x = width*9/10;
-    rightPaddle.y=height/2-PADDLE_HEIGHT/2;
+    setStart();
 
    /* scoreL =0;
     * scoreR = 0
-    * l_u = 0;
-    l_d = 0;
-    r_u = 0;
-    r_d = 0;*/
+    * */
     //todavia no probe si hace falta, es para el caso de cerrar el juego y volverlo a abrir\
 
-    clearScreen();
-    draw();
 
     int running = 1;
     while(running){
@@ -180,16 +168,45 @@ static void checkCollisions(){
 static void checkGoal(){
     if (ball.x <= leftPaddle.x + PADDLE_WIDTH){
         scoreR++;
+        beep(0x777, 1); //TODO: buscar alguna frecuencia que no suene tan fea
+        setStart();
     }
-    if (ball.y <= rightPaddle.x - PADDLE_WIDTH){
+    if (ball.x >= rightPaddle.x - PADDLE_WIDTH){
         scoreL++;
+        beep(0x777, 1);
+        setStart();
     }
 }
 
-static void draw(){
-    clearScreen(); //TODO: escribir mejor esta funcion, asi es lentisima xd
+static void draw(){//TODO: escribir mejor esta funcion, asi es lentisima
+    clearScreen();
     clearRectangle(leftPaddle.x, 0, PADDLE_WIDTH, height);
     drawRectangle(leftPaddle.x, leftPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
     drawRectangle(rightPaddle.x, rightPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
     drawCircle(ball.x+BALL_SIZE/2, ball.y+BALL_SIZE/2, BALL_SIZE/2);
+}
+
+static void setStart(){
+    ball.y =height/2-BALL_SIZE/2;
+    ball.x=width/2-BALL_SIZE/2;
+    ball.speed_x=3;
+    ball.speed_y=3;
+
+    leftPaddle.x = width/10;
+    leftPaddle.y = height/2-PADDLE_HEIGHT/2;
+
+    rightPaddle.x = width*9/10;
+    rightPaddle.y=height/2-PADDLE_HEIGHT/2;
+
+    l_u = 0;
+    l_d = 0;
+    r_u = 0;
+    r_d = 0;
+
+    draw();
+
+    char c;
+    do{
+        c = getChar();
+    } while( c != ' ' && c != '\n');
 }

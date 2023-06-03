@@ -47,7 +47,7 @@ void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
             return;
         case 7:
             _sti();
-            beep(rsi,rdi);
+            beep(rdi,rsi);
             _cli();
             return;
         case 8:
@@ -74,7 +74,6 @@ void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
 }
 
 void read(uint64_t fd, char *buffer, uint64_t length){
-   // getKey(); //para consumir el input en caso de que se haya apretado el teclado antes
     if (fd==STDIN){
         _sti();
         for(int i=0;i<length;i++){
