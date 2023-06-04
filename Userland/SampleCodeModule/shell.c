@@ -25,11 +25,11 @@ static void (*commands_functions[])() = {help, time, divideByZero, invalidOpCode
 
 void help(){
     int spaces;
-    char buffer[16];
+    char buffer[20];
     for(int i = 0; i < COMMANDS_LENGTH; i++){
         toUpper(buffer,commands[i]);
         colorPrint(buffer);
-        spaces = 15 - strlen(commands[i]);
+        spaces = 20 - strlen(commands[i]);
         for(int i = 0 ; i<spaces;i++){
             putChar(' ');
         }

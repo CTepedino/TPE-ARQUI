@@ -35,7 +35,7 @@ void exceptionDispatcher(int exception, uint64_t * RSP) {
             return;
     }
     printREGS(RSP);
-    char rstMsg[] = "Press any key to restart";
+    char rstMsg[] = "Presione cualquier tecla para reiniciar.";
     _sti();
     write(2, rstMsg, strlen(rstMsg));
     read(0, rstMsg, 1);
@@ -56,11 +56,11 @@ void exceptionDispatcher(int exception, uint64_t * RSP) {
 }
 
 static void zero_division() {
-	printERR("\nERROR: Division by zero is undefined\n");
+	printERR("\nERROR: La division por cero esta indefinida\n");
 }
 
 static void invalid_op_code(){
-    printERR("\nERROR: Invalid operation code\n");
+    printERR("\nERROR: Codigo de operacion invalido\n");
 }
 
 static void printERR(const char * message){
