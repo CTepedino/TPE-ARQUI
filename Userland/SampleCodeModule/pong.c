@@ -46,6 +46,7 @@ static void setStart();
 static void printScore(uint32_t x, uint32_t y, int score);
 static void mainGame();
 static void winScreen(int winner);
+static void drawMiddleLine();
 
 void pong(){
     screenInfo(&width,&height);
@@ -109,36 +110,45 @@ static void checkCollisionsAndGoals(){
     if (ball.y <= 0 || ball.y + BALL_SIZE >= height){
         ball.speed_y = -ball.speed_y;
     }
+    //LADO IZQUIERDO
 
-    if (ball.x <= leftPaddle.x + PADDLE_WIDTH && ball.y + BALL_SIZE >= leftPaddle.y && ball.y <= leftPaddle.y+PADDLE_HEIGHT){
-        ball.speed_x = -ball.speed_x;
-        bounces++;
-    }
-    else if (ball.x <= leftPaddle.x + PADDLE_WIDTH){
-        scoreR++;
-        beep(0x0777, 1);
-        if(scoreR>9){
-          winScreen(2);
+    if (ball.x <= leftPaddle.x + PADDLE_WIDTH){
+        if (ball.y + BALL_SIZE >= leftPaddle.y && ball.y <= leftPaddle.y+PADDLE_HEIGHT) {
+            ball.speed_x = -ball.speed_x;
+            bounces++;
         }
         else{
-            setStart();
+            scoreR++;
+            beep(0x0777, 1);
+            if(scoreR>9){
+                winScreen(2);
+            }
+            else{
+                setStart();
+            }
         }
     }
 
-    if (ball.x >= rightPaddle.x - PADDLE_WIDTH && ball.y + BALL_SIZE >= rightPaddle.y && ball.y <= rightPaddle.y+PADDLE_HEIGHT){
-        ball.speed_x = -ball.speed_x;
-        bounces++;
-    }
-    else if (ball.x >= rightPaddle.x - PADDLE_WIDTH){
-        scoreL++;
-        beep(0x0777, 1);
-        if(scoreL>9){
-          winScreen(1);
+    //LADO DERECHO
+
+
+    if (ball.x >= rightPaddle.x - PADDLE_WIDTH){
+        if ( ball.y + BALL_SIZE >= rightPaddle.y && ball.y <= rightPaddle.y+PADDLE_HEIGHT) {
+            ball.speed_x = -ball.speed_x;
+            bounces++;
         }
-        else{
-            setStart();
+        else if (ball.x >= rightPaddle.x - PADDLE_WIDTH){
+            scoreL++;
+            beep(0x0777, 1);
+            if(scoreL>9){
+                winScreen(1);
+            }
+            else{
+                setStart();
+            }
         }
     }
+
 
 }
 
@@ -148,10 +158,13 @@ static void draw() {
     clearRectangle(rightPaddle.x, rightPaddle.prev_y, PADDLE_WIDTH, PADDLE_HEIGHT);
     clearCircle(ball.prev_x + BALL_SIZE / 2, ball.prev_y + BALL_SIZE / 2, BALL_SIZE / 2);
 
+    drawMiddleLine();
+
     drawRectangle(leftPaddle.x, leftPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
     drawRectangle(rightPaddle.x, rightPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
     drawCircle(ball.x + BALL_SIZE / 2, ball.y + BALL_SIZE / 2, BALL_SIZE / 2);
 
+    //TODO: estaria bueno cambiar esto por los numeros grandes del juego original
     textPosition((width/2)-100,75);
     putChar(scoreL+'0');
     textPosition((width/2)+100,75);
@@ -256,4 +269,11 @@ static void winScreen(int winner){
         running = 0;
     }
     clearScreen();
+}
+
+
+static void drawMiddleLine(){
+    for(int i = 0; i<height;i+=MID_LINE_HEIGHT*3/2){
+        drawRectangle(width/2-MID_LINE_WIDTH/2,i, MID_LINE_WIDTH, MID_LINE_HEIGHT);
+    }
 }
