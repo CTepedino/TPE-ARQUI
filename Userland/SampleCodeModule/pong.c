@@ -109,8 +109,8 @@ static void checkCollisionsAndGoals(){
     if (ball.y <= 0 || ball.y + BALL_SIZE >= height){
         ball.speed_y = -ball.speed_y;
     }
-    //LADO IZQUIERDO
 
+    //LADO IZQUIERDO
     if (ball.x <= leftPaddle.x + PADDLE_WIDTH){
         if (ball.y + BALL_SIZE >= leftPaddle.y && ball.y <= leftPaddle.y+PADDLE_HEIGHT) {
             ball.speed_x = -ball.speed_x;
@@ -122,15 +122,11 @@ static void checkCollisionsAndGoals(){
             if(scoreR>9){
                 winScreen(2);
             }
-            else{
-                setStart();
-            }
+            setStart();
         }
     }
 
     //LADO DERECHO
-
-
     if (ball.x >= rightPaddle.x - PADDLE_WIDTH){
         if ( ball.y + BALL_SIZE >= rightPaddle.y && ball.y <= rightPaddle.y+PADDLE_HEIGHT) {
             ball.speed_x = -ball.speed_x;
@@ -142,9 +138,7 @@ static void checkCollisionsAndGoals(){
             if(scoreL>9){
                 winScreen(1);
             }
-            else{
-                setStart();
-            }
+            setStart();
         }
     }
 
@@ -162,12 +156,8 @@ static void draw() {
     drawCircle(ball.x + BALL_SIZE / 2, ball.y + BALL_SIZE / 2, BALL_SIZE / 2);
     drawMiddleLine();
 
-    //TODO: estaria bueno cambiar esto por los numeros grandes del juego original
-    textPosition((width/2)-100,75);
-    putChar(scoreL+'0');
-    textPosition((width/2)+100,75);
-    putChar(scoreR+'0');
-
+    drawBigNumber(scoreL,NUMBER_SIZE,(width/2)-100-CHAR_WIDTH*NUMBER_SIZE,75);
+    drawBigNumber(scoreR,NUMBER_SIZE,(width/2)+100,75);
 }
 
 static void setStart(){
