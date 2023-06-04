@@ -24,6 +24,7 @@
 #define STDIN 0
 #define STDOUT 1
 #define STDERR 2
+#define COLOR 3
 
 #define ESC 27
 

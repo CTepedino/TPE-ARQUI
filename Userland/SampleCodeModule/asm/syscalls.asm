@@ -8,7 +8,6 @@ GLOBAL sys_getREGS
 GLOBAL sys_beep
 GLOBAL sys_putRectangle
 GLOBAL sys_putCircle
-GLOBAL sys_clear
 GLOBAL sys_getCurrentKeyPress
 GLOBAL sys_getCurrentReleasedKeys
 
@@ -44,19 +43,16 @@ sys_getREGS:
 sys_beep:
     systemcall 7
 
-sys_clear:
+sys_putRectangle:
     systemcall 8
 
-sys_putRectangle:
+sys_putCircle:
     systemcall 9
 
-sys_putCircle:
+sys_getCurrentKeyPress:
     systemcall 10
 
-sys_getCurrentKeyPress:
-    systemcall 11
-
 sys_getCurrentReleasedKeys:
-    systemcall 12
+    systemcall 11
 
 

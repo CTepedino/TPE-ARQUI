@@ -6,6 +6,8 @@
 #define WHITE 0xFFFFFF
 #define BLACK 0
 
+
+
 void putChar(char c){
     sys_write(STDOUT, &c, 1);
 }
@@ -66,7 +68,9 @@ void getTime(timeStruct * time){
 }
 
 void clearScreen(){
-    sys_clear();
+    uint32_t width, height;
+    screenInfo(&width, &height);
+    sys_putRectangle(BLACK, 0, 0, width, height);
 }
 
 void drawRectangle(uint32_t x, uint32_t y, uint32_t base, uint32_t height){

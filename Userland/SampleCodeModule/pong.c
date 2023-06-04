@@ -153,11 +153,10 @@ static void draw() {
 
     drawRectangle(leftPaddle.x, leftPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
     drawRectangle(rightPaddle.x, rightPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
-    drawCircle(ball.x + BALL_SIZE / 2, ball.y + BALL_SIZE / 2, BALL_SIZE / 2);
     drawMiddleLine();
-
     drawBigNumber(scoreL,NUMBER_SIZE,(width/2)-100-CHAR_WIDTH*NUMBER_SIZE,75);
     drawBigNumber(scoreR,NUMBER_SIZE,(width/2)+100,75);
+    drawCircle(ball.x + BALL_SIZE / 2, ball.y + BALL_SIZE / 2, BALL_SIZE / 2);
 }
 
 static void setStart(){
