@@ -16,7 +16,7 @@ int last=0;
 int keyPressed = 0;
 
 char releaseBuffer[BUFFER_LEN];
-char r_last = 0;
+int r_last = 0;
 
 int isScancode(uint8_t code){
     return (code & 0x80) == 0;

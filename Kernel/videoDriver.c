@@ -83,7 +83,7 @@ void putChar(uint32_t hexColorChar, uint32_t hexColorBG, char c){
             tp.x = 0;
             tp.y -= CHAR_HEIGHT;
         }
-        char *cPixelMap = pixel_map(c);
+        unsigned char *cPixelMap = pixel_map(c);
         for (int y = 0; y < CHAR_HEIGHT; y++) {
             for (int x = 0; x < CHAR_WIDTH; x++) {
                 if (cPixelMap[y] & (0b10000000 >> x)) {

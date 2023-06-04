@@ -43,7 +43,6 @@ static void movePaddles();
 static void moveBall();
 static void checkCollisionsAndGoals();
 static void setStart();
-static void printScore(uint32_t x, uint32_t y, int score);
 static void mainGame();
 static void winScreen(int winner);
 static void drawMiddleLine();
@@ -119,7 +118,7 @@ static void checkCollisionsAndGoals(){
         }
         else{
             scoreR++;
-            beep(0x0777, 1);
+            beep((uint8_t)0x0777, 1);
             if(scoreR>9){
                 winScreen(2);
             }
@@ -139,7 +138,7 @@ static void checkCollisionsAndGoals(){
         }
         else if (ball.x >= rightPaddle.x - PADDLE_WIDTH){
             scoreL++;
-            beep(0x0777, 1);
+            beep((uint8_t)0x0777, 1);
             if(scoreL>9){
                 winScreen(1);
             }
@@ -158,11 +157,10 @@ static void draw() {
     clearRectangle(rightPaddle.x, rightPaddle.prev_y, PADDLE_WIDTH, PADDLE_HEIGHT);
     clearCircle(ball.prev_x + BALL_SIZE / 2, ball.prev_y + BALL_SIZE / 2, BALL_SIZE / 2);
 
-    drawMiddleLine();
-
     drawRectangle(leftPaddle.x, leftPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
     drawRectangle(rightPaddle.x, rightPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
     drawCircle(ball.x + BALL_SIZE / 2, ball.y + BALL_SIZE / 2, BALL_SIZE / 2);
+    drawMiddleLine();
 
     //TODO: estaria bueno cambiar esto por los numeros grandes del juego original
     textPosition((width/2)-100,75);

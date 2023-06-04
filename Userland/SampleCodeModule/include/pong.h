@@ -2,6 +2,7 @@
 #define PONG_H
 #include <stdint.h>
 #include <libc.h>
+#include <string.h>
 #define ESC 27
 #define PADDLE_WIDTH 10
 #define PADDLE_HEIGHT 45

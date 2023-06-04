@@ -25,9 +25,6 @@ char getChar();
 
 void scan(char * buf, uint64_t length);
 
-void intToStringL(uint64_t num, char *string, uint8_t base, uint32_t intLength);
-void intToString(uint64_t num, char * string, uint8_t base);
-uint32_t uIntLen(uint64_t num, uint8_t base);
 
 void getTime(timeStruct * time);
 
@@ -40,7 +37,7 @@ void screenInfo(uint32_t * width, uint32_t * height);
 
 void getREGS(uint64_t * buffer);
 
-void playSound();
+
 
 void clearScreen();
 

@@ -3,6 +3,8 @@
 #define ZERO_EXCEPTION_ID 0x0
 #define INVALID_OP_ID 6
 
+extern void read(uint64_t fd, char *buffer, uint64_t length);
+extern void write(uint64_t fd, const char * string, uint64_t count);
 
 extern uint64_t getSampleCodeModuleAddress();
 extern uint64_t getStackBase();

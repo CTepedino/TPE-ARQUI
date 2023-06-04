@@ -2,6 +2,8 @@
 #include <defs.h>
 #include <videoDriver.h>
 #include <keyboardDriver.h>
+#include <audioDriver.h>
+#include <time.h>
 #include <lib.h>
 #include <interrupts.h>
 

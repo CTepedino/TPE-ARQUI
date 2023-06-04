@@ -1,6 +1,7 @@
 global runDivideByZero
 global runInvalidOpCode
 
+section .text
 
 runDivideByZero:
     mov rax, 5
