@@ -7,132 +7,85 @@
 #include <lib.h>
 #include <interrupts.h>
 
-#define SYSCALL_COUNT 13
+#include <stdio.h>
+#define SYSCALL_COUNT 12
 
-void read(uint64_t fd, char *buffer, uint64_t length);
-void write(uint64_t fd, const char * string, uint64_t count);
+static void sys_read(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+static void sys_write(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+static void sys_sleep(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+static void sys_screenInfo(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+static void sys_textPosition(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+static void sys_getRTC(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+static void sys_getREGS(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+static void sys_beep(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+static void sys_putRectangle(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+static void sys_putCircle(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+static void sys_getAllKeys(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+static void sys_getReleasedKeys(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 
-void screenInfo(uint32_t * width, uint32_t * height);
-void getRTC(timeStruct * time);
-void putRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t base, uint32_t height);
-void putCircle(uint32_t hexColor, uint32_t x, uint32_t y, uint8_t radius);
+static void (*syscalls[SYSCALL_COUNT])(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9) = {
+        sys_read, sys_write, sys_sleep, sys_screenInfo, sys_textPosition, sys_getRTC, sys_getREGS, sys_beep,
+        sys_putRectangle, sys_putCircle, sys_getAllKeys, sys_getReleasedKeys,
+};
 
 void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t rax){
-    switch(rax){
-        case 0:
-            read(rdi, (char*)rsi, rdx);
-            return;
-        case 1:
-            write(rdi, (char*)rsi, rdx);
-            return;
-        case 2:
-            _sti();
-            sleep(rdi);
-            _cli();
-            return;
-        case 3:
-            screenInfo((uint32_t*)rdi, (uint32_t*)rsi);
-            return;
-        case 4:
-            setTextPosition(rdi, rsi);
-            return;
-        case 5:
-            getRTC((timeStruct *) rdi);
-            return;
-        case 6:
-            getREGS((int *) rdi, (uint64_t *) rsi);
-            return;
-        case 7:
-            _sti();
-            beep(rdi,rsi);
-            _cli();
-            return;
-        case 8:
-            putRectangle(rdi, rsi, rdx, rcx, r8);
-            return;
-        case 9:
-            putCircle(rdi, rsi, rdx, rcx);
-            return;
-        case 10:
-            getAllKeys((char *)rdi);
-            return;
-        case 11:
-            getReleasedKeys((char *) rdi);
-            return;
-    }
-}
-
-void read(uint64_t fd, char *buffer, uint64_t length){
-    if (fd==STDIN){
-        _sti();
-        for(int i=0;i<length;i++){
-            do {
-                buffer[i]=getKey();
-            } while(buffer[i]==0);
-        }
-        _cli();
-    }
-}
-void write(uint64_t fd, const char * string, uint64_t count){
-    uint32_t charColor;
-    switch(fd){
-        case STDOUT:
-            charColor = 0xFFFFFF;
-            break;
-        case STDERR:
-            charColor = 0xFF0000;
-            break;
-        case COLOR:
-            charColor = 0x78C475;
-        default:
-            return;
-    }
-    for(int i=0;i<count;i++){
-        putChar(charColor, 0, string[i]);
-    }
-}
-
-void screenInfo(uint32_t * width, uint32_t * height){
-    *height = getHeight();
-    *width  = getWidth();
-}
-
-void getRTC(timeStruct * time) {
-    time->year = getTime(9);
-    time->month = getTime(8);
-    time->dayOfMonth = getTime(7);
-    time->dayOfWeek = getTime(6);
-    time->hour = getTime(4);
-    time->minute = getTime(2);
-    time->second = getTime(0);
-}
-
-
-void putRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t base, uint32_t height){
-    uint32_t w = getWidth();
-    uint32_t h = getHeight();
-    if (x + base > w){
-        base = w - x;
-    }
-    if (y + height > h){
-        height = h - y;
-    }
-    for(int dx=0;dx<base;dx++){
-        for(int dy=0;dy<height;dy++){
-            putPixel(hexColor,dx+x,dy+y);
-        }
+    if (rax < SYSCALL_COUNT) {
+        syscalls[rax](rdi, rsi, rdx, rcx, r8, r9);
     }
 }
 
 
-void putCircle(uint32_t hexColor, uint32_t x, uint32_t y, uint8_t radius){
-    for (int i = -radius; i <= radius; i++) {
-        for (int j = -radius; j <= radius; j++) {
-            if ((i*i) + (j*j) <= (radius*radius)) {
-                putPixel(hexColor,j + x, i + y);
-            }
-        }
-    }
-    return;
+
+static void sys_read(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+    _sti();
+    read(rdi,(char *) rsi,rdx);
+    _cli();
 }
 
+static void sys_write(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+    write(rdi,(const char *)rsi,rdx);
+}
+
+static void sys_sleep(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+    _sti();
+    sleep(rdi);
+    _cli();
+}
+
+static void sys_screenInfo(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+    screenInfo((uint32_t *) rdi, (uint32_t *) rsi);
+}
+
+static void sys_textPosition(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+    setTextPosition(rdi,rsi);
+}
+
+static void sys_getRTC(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+    getRTC((timeStruct *) rdi);
+}
+
+static void sys_getREGS(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+    getREGS((int *) rdi, (uint64_t *) rsi);
+}
+
+static void sys_beep(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+    _sti();
+    beep((uint8_t) rdi, rsi);
+    _cli();
+}
+
+static void sys_putRectangle(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+    putRectangle(rdi,rsi,rdx,rcx,r8);
+}
+
+static void sys_putCircle(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+    putCircle(rdi,rsi, rdx, rcx);
+}
+
+static void sys_getAllKeys(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+    getAllKeys((char *) rdi);
+}
+
+static void sys_getReleasedKeys(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+    getReleasedKeys((char *) rdi);
+}

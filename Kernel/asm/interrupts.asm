@@ -163,7 +163,6 @@ _syscallHandler:
     call syscallDispatcher
     add rsp, 8
     iretq
-    ;los parametros de las syscalls se pasan como en linux: RAX para el ID, y los otros argumentos que se necesiten por RDI, RSI, RDX, R10, R8, R9.
 
 haltcpu:
 	cli

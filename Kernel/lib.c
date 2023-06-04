@@ -93,3 +93,13 @@ void getREGS(int * status, uint64_t * buffer){
     }
     *status = regsSaved;
 }
+
+void getRTC(timeStruct * time) {
+    time->year = getTime(9);
+    time->month = getTime(8);
+    time->dayOfMonth = getTime(7);
+    time->dayOfWeek = getTime(6);
+    time->hour = getTime(4);
+    time->minute = getTime(2);
+    time->second = getTime(0);
+}
