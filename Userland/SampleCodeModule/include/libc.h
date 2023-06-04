@@ -48,11 +48,11 @@ void clearScreen();
 
 void drawRectangle(uint32_t x, uint32_t y, uint32_t base, uint32_t height);
 
-void drawCircle(uint32_t x, uint32_t y, int32_t radius);
+void drawCircle(uint32_t x, uint32_t y, uint8_t radius);
 
 void clearRectangle(uint32_t x, uint32_t y, uint32_t base, uint32_t height);
 
-void clearCircle(uint32_t x, uint32_t y, int32_t radius);
+void clearCircle(uint32_t x, uint32_t y, uint8_t radius);
 
 
 void beep(uint8_t frequency, uint64_t ticks);

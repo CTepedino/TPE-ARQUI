@@ -13,7 +13,7 @@ void sys_regdump(uint64_t * buffer);
 void sys_beep(uint8_t frequency, uint64_t ticks);
 void sys_clear();
 void sys_putRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t base, uint32_t height);
-void sys_putCircle(uint32_t hexColor, uint32_t x, uint32_t y, int32_t radius);
+void sys_putCircle(uint32_t hexColor, uint32_t x, uint32_t y, uint8_t radius);
 void sys_getCurrentKeyPress(char * keys);
 void sys_getCurrentReleasedKeys(char * rkeys);
 void sys_sleep(uint64_t ticks);

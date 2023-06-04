@@ -99,7 +99,7 @@ void drawRectangle(uint32_t x, uint32_t y, uint32_t base, uint32_t height){
     sys_putRectangle(WHITE,x,y,base,height);
 }
 
-void drawCircle(uint32_t x, uint32_t y, int32_t radius){
+void drawCircle(uint32_t x, uint32_t y, uint8_t radius){
     sys_putCircle(WHITE,x,y,radius);
 }
 
@@ -107,7 +107,7 @@ void clearRectangle(uint32_t x, uint32_t y, uint32_t base, uint32_t height){
     sys_putRectangle(BLACK,x,y,base,height);
 }
 
-void clearCircle(uint32_t x, uint32_t y, int32_t radius){
+void clearCircle(uint32_t x, uint32_t y, uint8_t radius){
     sys_putCircle(BLACK,x,y,radius);
 }
 

@@ -12,15 +12,12 @@ extern uint64_t * getREGS();
 void read(uint64_t fd, char *buffer, uint64_t length);
 void write(uint64_t fd, const char * string, uint64_t count);
 void writeMatrix(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const char matrix[height][width]);
-void textPosition(uint32_t x, uint32_t y);
 void screenInfo(uint32_t * width, uint32_t * height);
 void getRTC(timeStruct * time);
 void regdump(uint64_t * buffer);
 void clearScreen();
 void putRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t base, uint32_t height);
-void putCircle(uint32_t hexColor, uint32_t x, uint32_t y, int32_t r);
-void getCurrentKeyPress(char * keys);
-void getCurrentReleasedKeys(char * rkeys);
+void putCircle(uint32_t hexColor, uint32_t x, uint32_t y, uint8_t radius);
 
 void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9, uint64_t rax){
     switch(rax){
@@ -37,7 +34,7 @@ void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
             screenInfo((uint32_t*)rdi, (uint32_t*)rsi);
             return;
         case 4:
-            textPosition(rdi, rsi);
+            setTextPosition(rdi, rsi);
             return;
         case 5:
             getRTC((timeStruct *) rdi);
@@ -60,10 +57,10 @@ void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
             putCircle(rdi, rsi, rdx, rcx);
             return;
         case 11:
-            getCurrentKeyPress((char *)rdi);
+            getAllKeys((char *)rdi);
             return;
         case 12:
-            getCurrentReleasedKeys((char *) rdi);
+            getReleasedKeys((char *) rdi);
             return;
         case 13:
             _sti();
@@ -101,10 +98,6 @@ void write(uint64_t fd, const char * string, uint64_t count){
     }
 }
 
-void textPosition(uint32_t x, uint32_t y){
-    setTextPosition(x,y);
-}
-
 void screenInfo(uint32_t * width, uint32_t * height){
     *height = getHeight();
     *width  = getWidth();
@@ -118,6 +111,13 @@ void getRTC(timeStruct * time) {
     time->hour = getTime(4);
     time->minute = getTime(2);
     time->second = getTime(0);
+}
+
+void regdump(uint64_t * buffer){
+    uint64_t * aux = getREGS();
+    for(int i=0; i<18;i++){
+        buffer[i]=aux[i];
+    }
 }
 
 void writeMatrix(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const char matrix[height][width]){
@@ -138,15 +138,6 @@ void writeMatrix(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const c
         }
     }
 }
-
-
-void regdump(uint64_t * buffer){
-    uint64_t * aux = getREGS();
-    for(int i=0; i<18;i++){
-        buffer[i]=aux[i];
-    }
-}
-
 
 void clearScreen(){
     uint32_t w = getWidth();
@@ -174,25 +165,14 @@ void putRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t base, uint
     }
 }
 
-//de https://github.com/mlombardia/arqui_tpe
-void putCircle(uint32_t hexColor, uint32_t center_x, uint32_t center_y, int32_t r){
-    int x, y;
-    for (int i = -r; i <= r; i++) {
-        for (int j = -r; j <= r; j++) {
-            x = j;
-            y = i;
-            if ((x*x) + (y*y) < (r*r)) {
-                putPixel(hexColor, center_x + x, center_y + y);
+
+void putCircle(uint32_t hexColor, uint32_t x, uint32_t y, uint8_t radius){
+    for (int i = -radius; i <= radius; i++) {
+        for (int j = -radius; j <= radius; j++) {
+            if ((i*i) + (j*j) <= (radius*radius)) {
+                putPixel(hexColor,j + x, i + y);
             }
         }
     }
     return;
-}
-
-void getCurrentKeyPress(char * keys){
-    getAllKeys(keys);
-}
-
-void getCurrentReleasedKeys(char * rkeys){
-    getReleasedKeys(rkeys);
 }

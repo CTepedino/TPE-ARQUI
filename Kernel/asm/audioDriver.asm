@@ -34,5 +34,5 @@ endSound:
     pop rbp
     ret
 
-;codigo tomado de https://github.com/mlombardia/arqui_tpe
+;codigo basado en https://github.com/mlombardia/arqui_tpe
 

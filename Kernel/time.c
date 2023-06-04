@@ -8,5 +8,5 @@ void timer_handler() {
 
 void sleep(uint64_t tickLength){
     uint64_t startTime = ticks;
-    while(ticks<=startTime+tickLength){}
+    while(ticks<startTime+tickLength){}
 }
