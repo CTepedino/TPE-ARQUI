@@ -2,13 +2,11 @@
 
 void read(uint64_t fd, char *buffer, uint64_t length){
     if (fd==STDIN){
-        _sti();
         for(int i=0;i<length;i++){
             do {
                 buffer[i]=getKey();
             } while(buffer[i]==0);
         }
-       _cli();
     }
 }
 
@@ -22,7 +20,8 @@ void write(uint64_t fd, const char * string, uint64_t count){
             charColor = 0xFF0000;
             break;
         case COLOR:
-            charColor = 0x78C475;
+            charColor = 0x378805;
+            break;
         default:
             return;
     }

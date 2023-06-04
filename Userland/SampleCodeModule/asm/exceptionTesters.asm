@@ -1,5 +1,5 @@
-global runDivideByZero
-global runInvalidOpCode
+GLOBAL runDivideByZero
+GLOBAL runInvalidOpCode
 
 section .text
 

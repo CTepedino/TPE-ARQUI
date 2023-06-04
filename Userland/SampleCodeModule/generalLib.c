@@ -1,12 +1,10 @@
 #include <stdint.h>
-#include <libc.h>
+#include <generalLib.h>
 #include <syscalls.h>
 #include <string.h>
 
 #define WHITE 0xFFFFFF
 #define BLACK 0
-
-
 
 void putChar(char c){
     sys_write(STDOUT, &c, 1);
@@ -14,6 +12,10 @@ void putChar(char c){
 
 void print(const char* string){
     sys_write(STDOUT, string, strlen(string));
+}
+
+void colorPrint(const char * string){
+    sys_write(COLOR, string, strlen(string));
 }
 
 char getChar(){

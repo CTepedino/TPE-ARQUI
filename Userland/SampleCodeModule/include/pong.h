@@ -1,7 +1,7 @@
 #ifndef PONG_H
 #define PONG_H
 #include <stdint.h>
-#include <libc.h>
+#include <generalLib.h>
 #include <string.h>
 #include <bigNumbers.h>
 #define ESC 27

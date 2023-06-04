@@ -1,7 +1,7 @@
 #ifndef BIGNUMBERS_H
 #define BIGNUMBERS_H
-#include <stdio.h>
-#include <libc.h>
+
+#include <generalLib.h>
 
 #define CHAR_HEIGHT 7
 #define CHAR_WIDTH 4

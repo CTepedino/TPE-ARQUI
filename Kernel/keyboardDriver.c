@@ -1,4 +1,5 @@
 #include <keyboardDriver.h>
+#include <lib.h>
 
 #define BUFFER_LEN 10
 #define KEYMAP_LEN 59

@@ -1,5 +1,6 @@
 #include <videoDriver.h>
 #include <lib.h>
+#include <interrupts.h>
 #define ZERO_EXCEPTION_ID 0x0
 #define INVALID_OP_ID 6
 
@@ -35,8 +36,10 @@ void exceptionDispatcher(int exception, uint64_t * RSP) {
     }
     printREGS(RSP);
     char rstMsg[] = "Press any key to restart";
+    _sti();
     write(2, rstMsg, strlen(rstMsg));
     read(0, rstMsg, 1);
+    _cli();
 
     uint32_t w,h;
     w = getWidth();

@@ -1,5 +1,5 @@
-#ifndef LIBC_H
-#define LIBC_H
+#ifndef GENERALLIB_H
+#define GENERALLIB_H
 
 #include <stdint.h>
 
@@ -20,6 +20,7 @@ typedef struct timeStruct{
 
 void putChar(char c);
 void print(const char* string);
+void colorPrint(const char * string);
 
 void textPosition(uint32_t x, uint32_t y);
 void screenInfo(uint32_t * width, uint32_t * height);
@@ -42,8 +43,6 @@ void clearCircle(uint32_t x, uint32_t y, uint8_t radius);
 void clearScreen();
 
 void beep(uint8_t frequency, uint64_t ticks);
-
-
 
 void sleep(uint64_t ticks);
 #endif

@@ -22,37 +22,42 @@ section .text
 sys_read:
     systemcall 0
 
-sys_write:
+sys_screenInfo:
     systemcall 1
 
-sys_sleep:
+sys_textPosition:
     systemcall 2
 
-sys_screenInfo:
+sys_getCurrentKeyPress:
     systemcall 3
 
-sys_textPosition:
+sys_getCurrentReleasedKeys:
     systemcall 4
 
-sys_getRTC:
+sys_write:
     systemcall 5
 
-sys_getREGS:
+sys_putRectangle:
     systemcall 6
 
-sys_beep:
+sys_putCircle:
     systemcall 7
 
-sys_putRectangle:
+sys_beep:
     systemcall 8
 
-sys_putCircle:
+sys_sleep:
     systemcall 9
 
-sys_getCurrentKeyPress:
+sys_getRTC:
     systemcall 10
 
-sys_getCurrentReleasedKeys:
+sys_getREGS:
     systemcall 11
+
+
+
+
+
 
 
