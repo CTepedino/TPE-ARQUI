@@ -192,7 +192,6 @@ static void setStart(){
 
 
 static void mainGame(){
-    clearScreen();
     scoreL = 0;
     scoreR = 0;
     while(running){
@@ -247,7 +246,7 @@ static void winScreen(int winner){
     scoreR = 0;
     winMessage[7]= winner+'0';
     textPosition(width/2 - strlen(winMessage)*4,height/2);
-    print(winMessage);
+    colorPrint(winMessage);
     char c;
     do{
         c = getChar();

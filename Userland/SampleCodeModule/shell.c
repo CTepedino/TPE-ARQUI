@@ -1,26 +1,40 @@
-#include <stdio.h>
+#include <shell.h>
+#include <generalLib.h>
 #include <stdint.h>
 #include <string.h>
 #include <pong.h>
 #include <exceptionTesters.h>
 
-#define READBUF_LENGTH 50
-#define COMMANDS_LENGTH 6
-#define TIME_LENGTH 9
-
 unsigned int scr_width;
 unsigned int scr_height;
 
-const char* helpstring =
-        "HELP                 Muestra informacion sobre los distintos programas disponibles.\n"
-        "TIME                 Imprime en pantalla la hora del sistema.\n"
-        "DIVIDEBYZERO         Programa que demuestra el funcionamiento de la excepcion \"Divicion por cero\".\n"
-        "INVALIDOPCODE        Programa que demuestra el funcionamiento de la excepcion \"Codigo de operacion invalido\".\n"
-        "PRINTREG             Imprime en pantalla informacion sobre todos los registros del procesador.\n"
-        "PONG                 Abre el juego Pong. El paddle izquierdo se controla con \'W\' y \'S\'.El derecho con \'I\' y \'K\'.\n\n";
 
-static void help(){
-    print(helpstring);
+const char* commands[] = {"help", "time", "dividebyzero", "invalidopcode", "regstatus", "pong",};
+const char* commands_desc[] = {
+        "Despliega una lista con los programas disponibles.\n",
+        "Imprime en pantalla la fecha y hora del sistema.\n",
+        "Ejecuta un programa que divide por cero, causando una excepcion\n",
+        "Ejecuta un programa que intenta realizar una operacion invalida, causando una excepcion\n",
+        "Imprime en pantalla el ultimo estado de los registros guardado.\n",
+        "Abre el juego Pong. El paddle izquierdo se controla con \'W\' y \'S\'.El derecho con \'I\' y \'K\'.\n",
+};
+
+static void (*commands_functions[])() = {help, time, divideByZero, invalidOpCode, regStatus, pong};
+
+
+
+void help(){
+    int spaces;
+    char buffer[16];
+    for(int i = 0; i < COMMANDS_LENGTH; i++){
+        toUpper(buffer,commands[i]);
+        colorPrint(buffer);
+        spaces = 15 - strlen(commands[i]);
+        for(int i = 0 ; i<spaces;i++){
+            putChar(' ');
+        }
+        print(commands_desc[i]);
+    }
 }
 
 static char * regNames[] = {"RAX", "RBX", "RCX", "RDX", "RBP","RSI", "RDI", "R8 ", "R9 ", "R10",
@@ -39,7 +53,7 @@ static void printSingleReg(char * regName, uint64_t reg, char * buffer){
     putChar('\n');
 }
 
-static void printReg(){
+void regStatus(){
     uint64_t regs[18]={0};
     char regBuffer[17];
     int status;
@@ -55,16 +69,7 @@ static void printReg(){
 }
 
 
-
-static void divideByZero(){
-    runDivideByZero();
-}
-
-static void invalidOpCode(){
-    runInvalidOpCode();
-}
-
-static void time(){
+void time(){
     timeStruct time;
     char buffer[5];
     print("Fecha y hora actual: ");
@@ -87,8 +92,7 @@ static void time(){
     putChar('\n');
 }
 
-static const char* commands[] = {"help", "time", "dividebyzero", "invalidopcode", "printreg", "pong"}; //Aca van los strings de los nombres de los commandos
-static void (*commands_functions[])() = {help, time, divideByZero, invalidOpCode, printReg, pong}; //Aca van las funciones de los comandos
+
 
 static int indexCommand(char* readbuf) {
     char *p = readbuf;
@@ -105,10 +109,12 @@ static int indexCommand(char* readbuf) {
 void shellStart() {
     screenInfo(&scr_width, &scr_height);
     textPosition(0, scr_height);
+
     colorPrint("Bienvenido!\n\n");
     print("Que modulo desea correr?\n\n");
     help();
     print("Para correr los modulos, ingrese el comando correspondiente y presione enter.\n\n");
+
     while(1) {
         colorPrint("$ ");
         char command[READBUF_LENGTH] = {0};
@@ -120,7 +126,7 @@ void shellStart() {
         }
         else {
             print(command);
-            print(": command not found\n");
+            print(": comando invalido\n");
         }
     }
 }

@@ -13,4 +13,6 @@ void intToString(uint64_t num, char * string, uint8_t base);
 
 uint32_t uIntLen(uint64_t num, uint8_t base);
 
+void toUpper(char * buffer, const char * string);
+
 #endif

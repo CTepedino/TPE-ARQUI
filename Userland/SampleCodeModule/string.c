@@ -1,6 +1,8 @@
 #include <string.h>
 #include <stdint.h>
 
+#define IS_LOWER(c) (c >= 'a' && c <= 'z') ? 1 : 0
+
 int strcmp(const char* str1, const char* str2) {
 	while (*str1 == *str2 && *str1 != '\0'){
         str1++;
@@ -38,4 +40,18 @@ uint32_t uIntLen(uint64_t num, uint8_t base){
         len++;
     }
     return len;
+}
+
+void toUpper(char * buffer,const char * string){
+    int i = 0;
+    while(string[i]) {
+        if (IS_LOWER(string[i])) {
+            buffer[i] = string[i] - 0x20;
+        }
+        else{
+            buffer[i]=string[i];
+        }
+        i++;
+    }
+    buffer[i]=0;
 }
