@@ -9,14 +9,11 @@
 
 #define SYSCALL_COUNT 13
 
-extern uint64_t * getREGS();
-
 void read(uint64_t fd, char *buffer, uint64_t length);
 void write(uint64_t fd, const char * string, uint64_t count);
 void writeMatrix(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const char matrix[height][width]);
 void screenInfo(uint32_t * width, uint32_t * height);
 void getRTC(timeStruct * time);
-void regdump(uint64_t * buffer);
 void clearScreen();
 void putRectangle(uint32_t hexColor, uint32_t x, uint32_t y, uint32_t base, uint32_t height);
 void putCircle(uint32_t hexColor, uint32_t x, uint32_t y, uint8_t radius);
@@ -44,7 +41,7 @@ void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
             getRTC((timeStruct *) rdi);
             return;
         case 6:
-            regdump((uint64_t *)rdi);
+            getREGS((int *) rdi, (uint64_t *) rsi);
             return;
         case 7:
             _sti();
@@ -112,12 +109,6 @@ void getRTC(timeStruct * time) {
     time->second = getTime(0);
 }
 
-void regdump(uint64_t * buffer){
-    uint64_t * aux = getREGS();
-    for(int i=0; i<18;i++){
-        buffer[i]=aux[i];
-    }
-}
 
 void writeMatrix(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const char matrix[height][width]){
     uint32_t h = getHeight();

@@ -1,5 +1,8 @@
 #include <lib.h>
 
+uint64_t regs[18] = {0};
+static int regsSaved = 0;
+
 void * memset(void * destination, int32_t c, uint64_t length)
 {
 	uint8_t chr = (uint8_t)c;
@@ -68,3 +71,25 @@ void intToString(uint64_t n, char * buffer, uint8_t base, uint8_t intLength) {;
     }
 }
 
+void saveREGS(uint64_t * RSP){
+    regsSaved = 1;
+    //generales
+    for(int i = 0 ; i<=14 ; i++){
+        regs[i] = RSP[14 - i];
+    }
+    //rsp
+    regs[15] = RSP[18];
+    //rip
+    regs[16] = RSP[15];
+    //rflags
+    regs[17] = RSP[17];
+}
+
+void getREGS(int * status, uint64_t * buffer){
+    if (regsSaved) {
+        for (int i = 0; i < 18; i++) {
+            buffer[i] = regs[i];
+        }
+    }
+    *status = regsSaved;
+}

@@ -57,8 +57,8 @@ void scan(char * buf, uint64_t length){
 
 
 
-void getREGS(uint64_t * buffer){
-    sys_regdump(buffer);
+void getREGS(int * status,uint64_t * buffer){
+    sys_getREGS(status, buffer);
 }
 
 void getTime(timeStruct * time){

@@ -35,7 +35,7 @@ void textPosition(uint32_t x, uint32_t y);
 
 void screenInfo(uint32_t * width, uint32_t * height);
 
-void getREGS(uint64_t * buffer);
+void getREGS(int * status,uint64_t * buffer);
 
 
 

@@ -4,7 +4,7 @@ GLOBAL sys_sleep
 GLOBAL sys_screenInfo
 GLOBAL sys_textPosition
 GLOBAL sys_getRTC
-GLOBAL sys_regdump
+GLOBAL sys_getREGS
 GLOBAL sys_beep
 GLOBAL sys_putRectangle
 GLOBAL sys_putCircle
@@ -38,7 +38,7 @@ sys_textPosition:
 sys_getRTC:
     systemcall 5
 
-sys_regdump:
+sys_getREGS:
     systemcall 6
 
 sys_beep:

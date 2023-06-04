@@ -1,7 +1,6 @@
 GLOBAL cpuVendor
 GLOBAL setTimeFormat
 GLOBAL getTime
-GLOBAL getREGS
 
 section .text
 	
@@ -57,29 +56,3 @@ getTime:
     pop rbp
     ret
 
-getREGS:
-    mov [regs], rax
-    mov [regs+8], rbx
-    mov [regs+8*2], rcx
-    mov [regs+8*3], rdx
-    mov [regs+8*4], rbp
-    mov [regs+8*5], rsi
-    mov [regs+8*6], rdi
-    mov [regs+8*7], r8
-    mov [regs+8*8], r9
-    mov [regs+8*9], r10
-    mov [regs+8*10], r11
-    mov [regs+8*11], r12
-    mov [regs+8*12], r13
-    mov [regs+8*13], r14
-    mov [regs+8*14], r15
-    mov [regs+8*15], rsp
-    mov rax, [rsp]
-    mov [regs+8*16], rax ;rip
-    pushfq
-    pop QWORD [regs+8*17] ;rflags
-    mov rax, regs
-    ret
-
-section .bss
-regs resb 8*18

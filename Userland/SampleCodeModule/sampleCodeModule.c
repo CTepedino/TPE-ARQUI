@@ -38,11 +38,17 @@ static void printSingleReg(char * regName, uint64_t reg, char * buffer){
 }
 
 static void printReg(){
-	uint64_t regs[18];
+	uint64_t regs[18]={0};
     char regBuffer[17];
-    getREGS(regs);
-    for(int i=0; i<=17;i++) {
-        printSingleReg(regNames[i], regs[i], regBuffer);
+    int status;
+    getREGS(&status,regs);
+    if (status) {
+        for (int i = 0; i <= 17; i++) {
+            printSingleReg(regNames[i], regs[i], regBuffer);
+        }
+    }
+    else{
+        print("No hay un status de registros guardado. Puede guardar uno en cualquier momento apretando la tecla CTRL izquierda\n");
     }
 }
 

@@ -18,13 +18,16 @@ int keyPressed = 0;
 char releaseBuffer[BUFFER_LEN];
 int r_last = 0;
 
-int isScancode(uint8_t code){
+int isKeyPress(uint8_t code){
     return (code & 0x80) == 0;
 }
 
-void keyboard_handler(){
+void keyboard_handler(uint64_t * RSP){
     uint64_t code = readKey();
-    if (isScancode(code)){
+    if (code == L_CTRL_SCANCODE){
+        saveREGS(RSP);
+    }
+    if (isKeyPress(code)){
         code = code < KEYMAP_LEN ? keyboard_map[code] : 0;
         if (code) {
             if (last > BUFFER_LEN){
@@ -35,7 +38,7 @@ void keyboard_handler(){
         }
     }
     else{
-        //es un breakcode
+        //es un key release
         code = code & 0x7F;
         code = code < KEYMAP_LEN ? keyboard_map[code] : 0;
         if (code) {
