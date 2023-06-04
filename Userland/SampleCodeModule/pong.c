@@ -1,13 +1,4 @@
 #include <pong.h>
-#define ESC 27
-#define PADDLE_WIDTH 10
-#define PADDLE_HEIGHT 60
-#define PADDLE_SPEED 7
-#define BALL_SIZE 10
-#define BALL_INITIAL_SPEED_X 15
-#define BALL_INITIAL_SPEED_Y 0
-
-#define SCORE_SIZE 1
 
 char winMessage[] = {"PLAYER   WON! CONGRATULATIONS!"};
 
@@ -27,24 +18,25 @@ struct ball{ //internamente la pelota es un cuadrado, aunque la dibujemos como u
 };
 
 
-static char keys[11];
-static char rkeys[11];
-static int l_u;
-static int l_d;
-static int r_u;
-static int r_d;
+char keys[11];
+char rkeys[11];
+int l_u;
+int l_d;
+int r_u;
+int r_d;
 
-static uint32_t width;
-static uint32_t height;
+uint32_t width;
+uint32_t height;
 
-static int scoreL;
-static int scoreR;
-static int running;
-static int startingDirection = 1;
+int scoreL;
+int scoreR;
+int bounces = 0;
+int running;
+int startingDirection = 1;
 
-static struct paddle leftPaddle;
-static struct paddle rightPaddle;
-static struct ball ball;
+struct paddle leftPaddle;
+struct paddle rightPaddle;
+struct ball ball;
 
 static void draw();
 static void movePaddles();
@@ -117,7 +109,7 @@ static void checkCollisionsAndGoals(){
     }
     else if (ball.x <= leftPaddle.x + PADDLE_WIDTH){
         scoreR++;
-        beep(0x0777, 1); //TODO: buscar alguna frecuencia que no suene tan fea
+        beep(0x0777, 1);
         if(scoreR>9){
           winScreen(2);
         }
