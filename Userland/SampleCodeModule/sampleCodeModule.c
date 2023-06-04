@@ -48,7 +48,7 @@ static void printReg(){
         }
     }
     else{
-        print("No hay un status de registros guardado. Puede guardar uno en cualquier momento apretando la tecla CTRL izquierda\n");
+        print("No hay un status de registros guardado. Puede guardar uno en cualquier momento apretando la tecla F1\n");
     }
 }
 

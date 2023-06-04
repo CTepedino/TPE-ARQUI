@@ -24,7 +24,7 @@ int isKeyPress(uint8_t code){
 
 void keyboard_handler(uint64_t * RSP){
     uint64_t code = readKey();
-    if (code == L_CTRL_SCANCODE){
+    if (code == F1_SCANCODE){
         saveREGS(RSP);
     }
     if (isKeyPress(code)){

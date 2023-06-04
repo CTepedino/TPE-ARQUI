@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <defs.h>
-#define L_CTRL_SCANCODE 0x1D
+#define F1_SCANCODE 0x3B
 
 void keyboard_handler();
 char getKey();
