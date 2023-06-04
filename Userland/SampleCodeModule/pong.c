@@ -92,10 +92,16 @@ static void movePaddles(){
 }
 
 static void moveBall(){
+    if (bounces==5){
+        ball.speed_x *= 1.25;
+        ball.speed_y *= 1.25;
+        bounces=0;
+    }
     ball.prev_x = ball.x;
     ball.prev_y = ball.y;
     ball.x += ball.speed_x;
     ball.y += ball.speed_y;
+
 }
 
 
@@ -106,6 +112,7 @@ static void checkCollisionsAndGoals(){
 
     if (ball.x <= leftPaddle.x + PADDLE_WIDTH && ball.y + BALL_SIZE >= leftPaddle.y && ball.y <= leftPaddle.y+PADDLE_HEIGHT){
         ball.speed_x = -ball.speed_x;
+        bounces++;
     }
     else if (ball.x <= leftPaddle.x + PADDLE_WIDTH){
         scoreR++;
@@ -120,6 +127,7 @@ static void checkCollisionsAndGoals(){
 
     if (ball.x >= rightPaddle.x - PADDLE_WIDTH && ball.y + BALL_SIZE >= rightPaddle.y && ball.y <= rightPaddle.y+PADDLE_HEIGHT){
         ball.speed_x = -ball.speed_x;
+        bounces++;
     }
     else if (ball.x >= rightPaddle.x - PADDLE_WIDTH){
         scoreL++;
@@ -144,9 +152,9 @@ static void draw() {
     drawRectangle(rightPaddle.x, rightPaddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
     drawCircle(ball.x + BALL_SIZE / 2, ball.y + BALL_SIZE / 2, BALL_SIZE / 2);
 
-    textPosition(50,50);
+    textPosition((width/2)-100,75);
     putChar(scoreL+'0');
-    textPosition(width-50,50);
+    textPosition((width/2)+100,75);
     putChar(scoreR+'0');
 
 }
@@ -163,6 +171,8 @@ static void setStart(){
 
     rightPaddle.x = width*9/10;
     rightPaddle.y=height/2-PADDLE_HEIGHT/2;
+
+    bounces = 0;
 
     l_u = 0;
     l_d = 0;

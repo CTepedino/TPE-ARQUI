@@ -10,13 +10,13 @@ static char keyboard_map[] = {
         'b', 'n', 'm', ',', '.', '/', '\0', '*', '\0', ' ', '\0'
 };
 
-static char buffer[BUFFER_LEN];
-static int first=0;
-static int last=0;
-static int keyPressed = 0;
+char buffer[BUFFER_LEN];
+int first=0;
+int last=0;
+int keyPressed = 0;
 
-static char releaseBuffer[BUFFER_LEN];
-static char r_last = 0;
+char releaseBuffer[BUFFER_LEN];
+char r_last = 0;
 
 int isScancode(uint8_t code){
     return (code & 0x80) == 0;

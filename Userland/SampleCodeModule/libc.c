@@ -82,11 +82,6 @@ void getREGS(uint64_t * buffer){
     sys_regdump(buffer);
 }
 
-
-void drawScreen(uint32_t x, uint32_t y, uint32_t width, uint32_t height,const char matrix[height][width]){
-    sys_writeMatrix(x,y,width,height,matrix);
-}
-
 void getTime(timeStruct * time){
     sys_getRTC(time);
 }

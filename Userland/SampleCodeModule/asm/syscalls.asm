@@ -1,6 +1,6 @@
 GLOBAL sys_read
 GLOBAL sys_write
-GLOBAL sys_writeMatrix
+GLOBAL sys_sleep
 GLOBAL sys_screenInfo
 GLOBAL sys_textPosition
 GLOBAL sys_getRTC
@@ -11,7 +11,7 @@ GLOBAL sys_putCircle
 GLOBAL sys_clear
 GLOBAL sys_getCurrentKeyPress
 GLOBAL sys_getCurrentReleasedKeys
-GLOBAL sys_sleep
+
 section .text
 
 %macro systemcall 1
@@ -26,7 +26,7 @@ sys_read:
 sys_write:
     systemcall 1
 
-sys_writeMatrix:
+sys_sleep:
     systemcall 2
 
 sys_screenInfo:
@@ -59,5 +59,4 @@ sys_getCurrentKeyPress:
 sys_getCurrentReleasedKeys:
     systemcall 12
 
-sys_sleep:
-    systemcall 13
+

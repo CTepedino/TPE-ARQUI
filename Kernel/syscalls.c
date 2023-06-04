@@ -5,7 +5,7 @@
 #include <lib.h>
 #include <interrupts.h>
 
-#define SYSCALL_COUNT 8
+#define SYSCALL_COUNT 13
 
 extern uint64_t * getREGS();
 
@@ -28,7 +28,9 @@ void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
             write(rdi, (char*)rsi, rdx);
             return;
         case 2:
-            writeMatrix(rdi, rsi, rdx, rcx, r8);
+            _sti();
+            sleep(rdi);
+            _cli();
             return;
         case 3:
             screenInfo((uint32_t*)rdi, (uint32_t*)rsi);
@@ -61,11 +63,6 @@ void syscallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
             return;
         case 12:
             getReleasedKeys((char *) rdi);
-            return;
-        case 13:
-            _sti();
-            sleep(rdi);
-            _cli();
             return;
     }
 }
